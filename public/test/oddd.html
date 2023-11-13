@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Even and Odd Numbers</title>
+</head>
+<body>
+    <div>
+        <h1>Even and Odd Numbers</h1>
+        <p>Numbers: 34, 3, 4, 45</p>
+        <p>Even Numbers: <span id="evenNumbers"></span></p>
+        <p>Odd Numbers: <span id="oddNumbers"></span></p>
+    </div>
+
+    <script>
+        const numbers = [34, 3, 4, 45];
+        const evenNumbers = [];
+        const oddNumbers = [];
+
+        for (let i = 0; i < numbers.length; i++) {
+            if (numbers[i] % 2 === 0) {
+                evenNumbers.push(numbers[i]);
+            } else {
+                oddNumbers.push(numbers[i]);
+            }
+        }
+
+        // แสดงผลลัพธ์บนหน้าเว็บ
+        document.getElementById('evenNumbers').textContent = evenNumbers.join(', ');
+        document.getElementById('oddNumbers').textContent = oddNumbers.join(', ');
+    </script>
+</body>
+</html>

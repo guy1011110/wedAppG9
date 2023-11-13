@@ -1,0 +1,15 @@
+#text2{
+    color :red;
+    background-color: aqua;
+    border-radius: 17px;
+    padding: 16px;
+    font-weight: bold;
+    border: 1px;
+}
+#text1{
+    color :black;
+
+    background-color: aqua;
+    padding: 16px;
+    border-radius: 16px;
+}

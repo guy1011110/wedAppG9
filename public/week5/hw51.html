@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Management System</title>
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.min.js"></script>
+<script src="/public/js/week5.js"></script>
+<link rel="stylesheet" href="/public/css/week5.css">
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ 
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 " >
+                <h2 class="text-center">Asset Management System</h2>
+              <br>
+                <form id="loginForm">
+                    <div class="AA shadow ">
+                    <div class="mb-3 text-black">
+                        <label for="username" class="form-label">Username:</label>
+                        <input type="text" id="username" name="username" class="form-control" required>
+                    </div>
+                    <div class="mb-3 text-black">
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="password" id="password" name="password" class="form-control" required>
+                    </div>
+  
+                    <button type="button" class="btn btn-primary btn-sm"  onclick="login()">Sign up</button>
+
+                   
+                    
+                </div>
+                </form>
+                <p id="error" class="text-center text-danger mt-3"></p>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

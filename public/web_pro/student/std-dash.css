@@ -1,0 +1,48 @@
+/* CSS สำหรับปฏิทิน */
+/* คุณสามารถปรับแต่งดีไซน์ตามความต้องการของคุณ */
+.calendar {
+    text-align: center;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.calendar-header button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.calendar-days {
+    display: flex;
+    font-weight: bold;
+}
+
+.day {
+    flex: 1;
+    padding: 5px;
+}
+
+.calendar-dates {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.date {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+.calendar-days {
+    display: flex;
+    font-weight: bold;
+    flex-direction: row-reverse; /* ทำให้วันอาทิตย์อยู่ด้านซ้ายสุด */
+}
+

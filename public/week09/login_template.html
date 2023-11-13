@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/public/js/notiflix-aio-3.2.6.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <form id="formLogin">
+            <input type="text" class="form-control mt-3" name="txtUsername" placeholder="Username" required>
+            <input type="password" class="form-control my-2" name="txtPassword" placeholder="Password" required>
+            <button type="submit" class="btn btn-success">Login</button>
+        </form>
+    </div>
+
+    <script>
+        const formLogin = document.querySelector('#formLogin');
+        formLogin.onsubmit = async function (e) {
+            e.preventDefault();
+
+            const username = formLogin.querySelector('[name="txtUsername"]').value;
+            const password = formLogin.querySelector('[name="txtPassword"]').value;
+
+            try {
+                const options = {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ "username": username, "password": password }),
+                };
+
+                const response = await fetch('/login', options);
+
+                if (response.ok) {
+                    const roleResponse = await fetch('/userRole', {
+                        method: 'POST',
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ "username": username }),
+                    });
+
+                    if (roleResponse.ok) {
+                        const roleData = await roleResponse.json();
+                        const userRole = roleData.role;
+
+                        if (userRole === "student") {
+                            window.location.href = "/student";
+                        } else if (userRole === "staff") {
+                            window.location.href = "/staff";
+                        } else if (userRole === "lecturer") {
+                            window.location.href = "/lecturer";
+                        } else {
+                            alert("Invalid role");
+                        }
+                    } else {
+                        alert("Failed to fetch user role");
+                    }
+                } else if (response.status === 401) {
+                    const data = await response.text();
+                    alert(data); // Display an error message
+                } else {
+                    throw Error('Connection error');
+                }
+            } catch (err) {
+                console.error(err.message);
+                alert(err.message); // Display an error message
+            }
+        }
+    </script>
+</body>
+
+</html>

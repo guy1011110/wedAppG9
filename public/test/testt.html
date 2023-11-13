@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odd or Even Number Checker</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Odd or Even Number Checker</h1>
+        <form id="number-form">
+            <div class="form-group">
+                <label for="number">Enter a Number:</label>
+                <input type="number" class="form-control" id="number" required>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="checkNumber()">Check</button>
+        </form>
+        <div id="result" class="mt-3"></div>
+    </div>
+
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function checkNumber() {
+            // Get user input
+            const number = parseInt(document.getElementById('number').value);
+
+            // Check if the input is a valid number
+            if (isNaN(number)) {
+                document.getElementById('result').innerHTML = '<div class="alert alert-danger">Please enter a valid number.</div>';
+            } else {
+                // Determine if the number is odd or even
+                const resultMessage = number % 2 === 0 ? 'Even' : 'Odd';
+
+                // Display the result
+                document.getElementById('result').innerHTML = `<div class="alert alert-success">${number} is an ${resultMessage} number.</div>`;
+            }
+        }
+    </script>
+</body>
+</html>

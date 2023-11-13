@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"><!-- Icon -->
+    <link rel="stylesheet" href="/public/web_pro/student/std-dash.css">
+    <title>Calender</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 pt-3">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <i class="fas fa-home me-2" style="color: #11D553; font-size: 1.5rem;"></i>
+                        <span class="fs-5 d-none d-sm-inline" style="color: #11D553;">Asset borrowing</span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                        <li>
+                            <a href="/student" class="nav-link px-0 align-middle">
+                                <i class="fas fa-tachometer-alt me-2" style="color:#5F6165;"></i>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/student/Asset" class="nav-link px-0 align-middle">
+                                <i class="fas fa-box me-2" style="color:#5F6165;"></i> <!-- Asset Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Asset</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/student/Asset-accept" class="nav-link px-0 align-middle">
+                                <i class="fas fa-check-circle me-2" style="color:#5F6165;"></i>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Asset Accept</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" class="nav-link px-0 align-middle">
+                                <i class="far fa-calendar me-2" style="color:#5F6165;"></i> <!-- Calendar Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;border-bottom: 2px solid">Calendar</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <hr>
+                    <div class="dropdown pb-5">
+                      <a href="" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                          id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                          <img src="https://github.com/mdo.png" alt="avatar" width="30" height="30"
+                              class="rounded-circle">
+                          <span id="fullName" class="d-none d-sm-inline p-2" style="color:#000000;"></span>
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                          <li><a class="dropdown-item" href="/settings"><i class="fas fa-cog me-2"></i>Settings</a>
+                          </li>
+                          <li><a class="dropdown-item" id="logout-link" href="/logout"><i
+                                      class="fas fa-sign-out-alt me-2"></i>Sign
+                                  out</a>
+                          </li>
+                      </ul>
+                  </div>
+                </div>
+            </div>
+            <div class="col bg-light">
+                <div class="row bg-white py-2">
+                    <div class="col">
+                        <div class="input-group" style="width: 350px;">
+                            <span class="input-group-text bg-light border-0"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control bg-light border-0" placeholder="Search or type" id="search-input">
+                            <button class="btn btn-primary" id="search-button">Search</button>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="container">
+                <div class="row">
+
+                    <div class="col-sm">
+                        <div class="text-primary p-3"><h1>calendar</h1></div>
+                     <div>
+                        <div class="calendar">
+                            <div class="calendar-header">
+                                <button id="prev-month">Previous Month</button>
+                                <h2 id="current-month-year"></h2>
+                                <button id="next-month">Next Month</button>
+                            </div>
+                            <div class="calendar-days">
+                                <div class="day">Sun</div>
+                                <div class="day">Mon</div>
+                                <div class="day">Tue</div>
+                                <div class="day">Wed</div>
+                                <div class="day">Thu</div>
+                                <div class="day">Fri</div>
+                                <div class="day">Sat</div>
+                            </div>
+                            <div class="calendar-dates" id="calendar-dates"></div>
+                        </div>
+                        <script src="calendar.js"></script>
+                     </div>
+                     <div >
+                        <div class="text-primary p-3"><h1>Return item</h1></div>
+<br>
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Time</th>
+        <th scope="col">item</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">8.00</th>
+        <td></td>
+       
+      </tr>
+      <tr>
+        <th scope="row">9.00</th>
+        <td>item1</td>
+  
+      <tr>
+        <th scope="row">10.00</th>
+        <td></td>
+      
+      </tr>
+      <tr>
+        <th scope="row">11.00</th>
+        <td></td>
+      
+      </tr>
+      <tr>
+        <th scope="row">12.00</th>
+        <td>item2</td>
+      
+      </tr>
+    </tbody>
+  </table>
+                     </div >
+                   
+
+
+                    </div>  
+                
+                    <div class="col-sm">
+                        <div class="text-primary p-3"><h2>Borrowing Date / Teacher accept Date</h2></div>
+                        <table class="table table-striped">
+                            <thead>
+                              <tr>
+                                <th scope="col">Time</th>
+                                <th scope="col">item</th>
+                        
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row">8.00</th>
+                                <td></td>
+                               
+                              </tr>
+                              <tr>
+                                <th scope="row">9.00</th>
+                                <td>item1 Borrowing Date</td>
+                          
+                              <tr>
+                                <th scope="row">10.00</th>
+                                <td></td>
+                              
+                              </tr>
+                              <tr>
+                                <th scope="row">11.00</th>
+                                <td></td>
+                              
+                              </tr>
+                              <tr>
+                                <th scope="row">12.00</th>
+                                <td>item2 Teacher accept Borrow</td>
+                              
+                              </tr>
+                              <tr>
+                                <th scope="row">12.00</th>
+                                <td></td>
+                              
+                              </tr>
+                              <tr>
+                                <th scope="row">12.00</th>
+                                <td></td>
+                              
+                              </tr>
+                              <tr>
+                                <th scope="row">12.00</th>
+                                <td></td>
+                              
+                              </tr>
+                              <tr>
+                                <th scope="row">12.00</th>
+                                <td></td>
+                              
+                              </tr>
+                              <tr>
+                                <th scope="row">12.00</th>
+                                <td></td>
+                              
+                              </tr>
+                              <tr>
+                                <th scope="row">12.00</th>
+                                <td></td>
+                              
+                              </tr>
+
+                            </tbody>
+                 
+                
+                    </div>
+                
+                   
+                
+                  </div>
+                
+                </div>
+
+               
+            </div>
+        </div>
+    </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+            // Fetch the user's full name and update the UI
+            fetch("/user")
+                .then(response => response.json())
+                .then(data => {
+                    const fullNameElement = document.getElementById('fullName');
+                    if (data.fullname) {
+                        fullNameElement.textContent = data.fullname;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+
+            // Logout
+            document.getElementById('logout-link').addEventListener('click', function (e) {
+                e.preventDefault();
+                fetch('/logout')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.redirect) {
+                            window.location.href = data.redirect;
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                // Clear session on the client-side
+                fetch('/clear-session')
+                    .then(response => response.json())
+                    .catch(error => console.error('Error:', error));
+                // Replace current URL with the home page
+                history.replaceState(null, '', '/');
+            });
+        });
+
+document.addEventListener("DOMContentLoaded", function() {
+    const prevMonthBtn = document.getElementById("prev-month");
+    const nextMonthBtn = document.getElementById("next-month");
+    const currentMonthYear = document.getElementById("current-month-year");
+    const calendarDates = document.getElementById("calendar-dates");
+    
+    let currentDate = new Date();
+    
+
+    function updateCalendar() {
+        currentMonthYear.textContent = formatDate(currentDate, "MMMM yyyy");
+        calendarDates.innerHTML = "";
+    
+        const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    
+        for (let day = firstDay; day <= lastDay; day.setDate(day.getDate() + 1)) {
+            const dateDiv = document.createElement("div");
+            dateDiv.classList.add("date");
+            dateDiv.textContent = day.getDate();
+            calendarDates.appendChild(dateDiv);
+        }
+    }
+    
+    function formatDate(date, format) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return date.toLocaleDateString(undefined, options);
+    }
+    
+    prevMonthBtn.addEventListener("click", function() {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        updateCalendar();
+    });
+    
+    nextMonthBtn.addEventListener("click", function() {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        updateCalendar();
+    });
+    
+    updateCalendar();
+
+    
+
+});
+</script>
+</body>
+</html>

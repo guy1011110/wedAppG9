@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/public/js/notiflix-aio-3.2.6.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <form id="formRegister">
+            <input type="text" class="form-control mt-3" name="txtUsername" placeholder="Username" required>
+            <input type="password" class="form-control my-2" name="txtPassword" placeholder="Password" required>
+            <select class="form-control my-2" name="role" required>
+                <option value="1">Student</option>
+                <option value="2">Staff</option>
+                <option value="3">Lecturer</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+
+    <script>
+        const formRegister = document.querySelector('#formRegister');
+        formRegister.onsubmit = async function (e) {
+            e.preventDefault();
+
+            const username = formRegister.querySelector('[name="txtUsername"]').value;
+            const password = formRegister.querySelector('[name="txtPassword"]').value;
+            const role = formRegister.querySelector('[name="role"]').value;
+
+            try {
+                const options = {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ "username": username, "password": password, "role": role }),
+                };
+
+                const response = await fetch('/register', options);
+
+                if (response.ok) {
+                    alert('Successfully registered!');
+                    window.location.href = "/";
+                } else if (response.status === 400) {
+                    const data = await response.text();
+                    alert(data);
+                } else {
+                    throw Error('Registration error');
+                }
+            } catch (err) {
+                console.error(err.message);
+                alert(err.message);
+            }
+        }
+    </script>
+</body>
+
+</html>

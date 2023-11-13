@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <div class="container">
+        <select id="student" class="form-select">
+            <option value="Lora">Lora</option>
+            <option value="Peter">Peter</option>
+            <option value="Boat">Boat</option>
+        </select>
+        <button class="btn btn-danger" id="loginButton">Login</button>
+    </div>
+    <div id="alertLogin" class="alert alert-danger" style="display: none">
+        <strong>Error</strong> Your username is incorrect!
+    </div>
+    <script>
+        const json_students = '[{"name": "Lora"}, {"name": "Peter"}, {"name": "Boat"}]';
+        const students = JSON.parse(json_students);
+
+        let studentSelect = document.querySelector('#student');
+        students.forEach(function (stu) {
+            let option = document.createElement('option');
+            option.value = stu.name;
+            option.textContent = stu.name;
+            studentSelect.appendChild(option);
+        });
+
+        document.querySelector('#loginButton').onclick = function () {
+            const selectedName = document.querySelector('#student').value;
+
+            if (selectedName === "Lora") {
+                localStorage.setItem('username', selectedName);
+                
+            } else {
+                document.querySelector('#alertLogin').style.display = "block";
+            }
+        }
+        window.onload = function () {
+
+
+
+const username = localStorage.getItem('username');
+if (username) {
+document.getElementById('displayUsername').textContent = username;
+} else {
+
+document.getElementById('displayUsername').textContent = 'Guest';
+}
+    </script>
+</body>
+
+</html>

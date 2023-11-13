@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Number Checker</title>
+    <!-- Include Bootstrap CSS for styling -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5 ">
+        <h1>Prime Number Checker</h1>
+        <form>
+            <div class="form-group">
+                <label for="number">Enter a Number:</label>
+                <input type="number" class="form-control" id="number" required>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="checkPrime()">Check Prime</button>
+        </form>
+        <div id="result" class="mt-3"></div>
+    </div>
+
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function isPrime(number) {
+            if (number <= 1) {
+                return false;
+            }
+            if (number <= 3) {
+                return true;
+            }
+            if (number % 2 === 0 || number % 3 === 0) {
+                return false;
+            }
+            let i = 5;
+            while (i * i <= number) {
+                if (number % i === 0 || number % (i + 2) === 0) {
+                    return false;
+                }
+                i += 6;
+            }
+            return true;
+        }
+
+        function checkPrime() {
+            const number = parseInt(document.getElementById('number').value);
+            const resultElement = document.getElementById('result');
+
+            if (isNaN(number)) {
+                resultElement.innerHTML = '<div class="alert alert-danger">Please enter a valid number.</div>';
+            } else {
+                if (isPrime(number)) {
+                    resultElement.innerHTML = `<div class="alert alert-success">${number} is a prime number.</div>`;
+                } else {
+                    resultElement.innerHTML = `<div class="alert alert-warning">${number} is not a prime number.</div>`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+The price calculation is:
+- Black and white printing costs 2 baht/page
+- Color printing costs 5 baht/page
+- Two-sides printing reduces the total price by 20%
+- The total price must be ceiled to the nearest integer

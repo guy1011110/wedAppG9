@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.bundle.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"><!-- Icon -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"><!-- Icon -->
+    <title>Home</title>
+</head>
+<style>
+  .asset-image {
+    width: 100px;  
+            height: auto; 
+  }
+</style>
+
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 pt-3">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <i class="fas fa-home me-2" style="color: #11D553; font-size: 1.5rem;"></i>
+                        <span class="fs-5 d-none d-sm-inline" style="color: #11D553;">Asset borrowing</span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fas fa-tachometer-alt me-2" style="color:#5F6165;"></i>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fas fa-box me-2" style="color:#5F6165;"></i> <!-- Asset Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Asset</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fas fa-check-circle me-2" style="color:#5F6165;"></i>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;border-bottom: 2px solid">Asset Accept</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="far fa-calendar me-2" style="color:#5F6165;"></i> <!-- Calendar Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Calendar</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <hr>
+                    <div class="dropdown pb-5">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                            id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://github.com/mdo.png" alt="avatar" width="30" height="30"
+                                class="rounded-circle">
+                            <span class="d-none d-sm-inline mx-1" style="color:#5F6165;">Student1</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class a="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col bg-light">
+                <div class="row bg-white py-2">
+                    <div class="col">
+                        <div class="input-group" style="width: 350px;">
+                            <span class="input-group-text bg-light border-0"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control bg-light border-0" placeholder="Search or type" id="search-input">
+                            <button class="btn btn-primary" id="search-button">Search</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="container">
+                    <div>
+                      <div class="text-primary p-3"><h1>Asset Accept</h1></div>
+                      
+                        <div class="container">
+                        
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">Asset ID</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">AssetName</th>
+                                <th scope="col">Status</th>
+                                
+                                <th scope="col">Borrow Date</th>
+                                <th scope="col">Return Date</th>
+                                <th scope="col">Approved By</th>
+                                <th scope="col">Action</th>
+                                
+                                <!-- Add more headers as needed -->
+                              </tr>
+                            </thead>
+                            <tbody id="table-body">
+                              <!-- Data rows will be inserted here -->
+                            </tbody>
+                            
+                          </table>
+                         
+                        </div>
+                        
+                </div>
+
+                    </div>
+                    
+
+
+              
+
+
+                    </div>
+
+                </div>
+            </div>
+
+              
+            </div>
+        </div>
+    </div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  fetch('/asset-borrow-lec')
+    .then(response => response.json())
+    .then(data => {
+      const tableBody = document.getElementById('table-body');
+      tableBody.innerHTML = ''; // Clear existing content
+
+      // Filter data to only include assets with 'Borrowing' status
+
+      borrowingAssets.forEach(item => {
+        const row = createTableRow(item);
+        tableBody.appendChild(row);
+      });
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+function createTableRow(item) {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <th scope="row">${item.Assetid}</th>
+    <td><img src="/public/assets/${item.Assetimg}" class="asset-image" alt="${item.Assetname}"></td>
+    <td>${item.Assetname}</td>
+    <td>${item.Assetstatus}</td>
+   
+    <td>${item.Borrowdate || 'N/A'}</td>
+    <td>${item.ReturnDate || 'N/A'}</td>
+    <td>${item.lectname || 'N/A'}</td>
+    <td><button class="btn btn-danger" onclick="returnAsset(${item.Assetid})">Return</button></td>
+    <!-- You can add more cells as needed -->
+  `;
+  return tr;
+}
+
+function returnAsset(assetId) {
+  // Get borrowname from localStorage
+  const borrowname = localStorage.getItem('username');
+  if (!borrowname) {
+    Swal.fire('Error', 'User not logged in or username not found in localStorage', 'error');
+    return;
+  }
+  // Confirm the action with the user
+  Swal.fire({
+    title: 'Are you sure you want to return this asset?',
+    showCancelButton: true,
+    confirmButtonText: 'Return',
+    reverseButtons: true
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Call the API or server-side code to handle the return
+      fetch(`/return-asset/${assetId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ borrowname, newStatus: 'RePending' }) // Use borrowname from localStorage
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          // Update the UI or refresh the data
+          Swal.fire('Returned!', 'The asset Returned!', 'success');
+          // Optionally reload the page or fetch the data again
+        } else {
+          throw new Error('Return failed');
+        }
+      })
+      .catch(error => {
+        Swal.fire('Error', 'Error returning the asset: ' + error, 'error');
+      });
+    }
+  });
+}
+
+
+function fetchDisabledAssets() {
+      fetch('/disabled-assets-requests')
+      .then(response => response.json())
+      .then(data => {
+          const disabledAssetsBody = document.getElementById('disabled-assets-body');
+          disabledAssetsBody.innerHTML = ''; // Clear existing content
+
+          data.forEach(item => {
+              const row = createDisabledTableRow(item);
+              disabledAssetsBody.appendChild(row);
+          });
+      })
+      .catch(error => console.error('Error:', error));
+  }
+function createDisabledTableRow(item) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+          <th scope="row">${item.Assetid}</th>
+          <td><img src="/public/assets/${item.Assetimg}" class="asset-image" alt="${item.Assetname}"></td>
+          <td>${item.Assetname}</td>
+          <td>${item.Assetstatus}</td>
+         
+          
+          <td>${item.comment || 'No comment'}</td>
+      `;
+      return tr;
+  }
+
+  // Call the function to fetch and display disabled assets
+
+
+
+
+
+
+// Call the function to fetch and display pending assets
+
+
+
+window.onload = function () {
+
+
+const userid = localStorage.getItem('userid');
+const username = localStorage.getItem('username');
+if (username) {
+document.getElementById('displayUsername').textContent = 'StudentName: '+username;
+document.getElementById('displayUserid').textContent = 'ID: '+userid;
+} else {
+
+document.getElementById('displayUsername').textContent = 'Guest';
+document.getElementById('displayUserid').textContent = 'ID';
+}}
+</script>
+</body>
+</html>

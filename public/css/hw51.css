@@ -1,0 +1,10 @@
+.AA{
+    padding: 40px 20px 20px 20px;
+    justify-content: center;
+    border-style: solid;
+    border-radius: 10px;
+    border-width: 1px;
+    color: blue;
+    display: flex;
+    flex-direction: column;
+}

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+  <script src="/public/js/bootstrap.bundle.min.js"></script>
+  <script src="/public/js/sweetalert2.all.min.js"></script>
+  <script src="/public/js/bootstrap.min.js"></script>
+  <script src="/public/js/sweetalert2.all.min.js"></script>
+  <title>Welcome</title>
+</head>
+<body class="p-3">
+  <h1>Admin Page</h1>
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-success" onclick="addProduct()">Add</button>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Amount</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="tblProduct">
+    </tbody>
+  </table>
+  <div class="modal" id="productModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Add/Edit product</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formProduct">
+            <label class="form-label">Name</label>
+            <input type="text" name="pname" class="form-control mb-2" placeholder="name">
+            <label class="form-label">Price</label>
+            <input type="number" name="price" class="form-control mb-2" placeholder="price">
+            <label class="form-label">Amount</label>
+            <input type="number" name="amount" class="form-control mb-3" placeholder="amount">
+            <button type="submit" class="btn btn-success">OK</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var action = 'add';
+    var editID = 0;
+    const productModal = new bootstrap.Modal(document.querySelector('#productModal'));
+
+    function getProducts() {
+      fetch('/products')
+        .then(function (response) {
+          if (response.ok) {
+            return response.json();
+          }
+          throw Error('Bad response');
+        })
+        .then(function (data) {
+          let rows = '';
+          data.forEach(function (product) {
+            rows += `<tr><td>${product.id}</td>`;
+            if (product.image == "") {
+              rows += `<td><img src="/img/photo.png"/></td>`;
+            } else {
+              rows += `<td><img src="/img/${product.image}"/></td>`;
+            }
+            rows += `<td>${product.name}</td>`;
+            rows += `<td>${product.price}</td>`;
+            rows += `<td>${product.amount}</td>`;
+            rows += `<td><button class="btn btn-warning" onclick=editProduct(${JSON.stringify(product)})>Edit</button>`;
+            rows += `<button class="btn btn-danger" onclick=deleteProduct(${product.id})>Delete</button></td></tr>`;
+          });
+          tblProduct.innerHTML = rows;
+        })
+        .catch(function (err) {
+          console.error(err);
+          alert(err);
+        });
+    }
+
+    function deleteProduct(id) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Warning',
+        text: "Sure to delete this product?",
+        showCancelButton: true,
+        confirmButtonText: 'Yes'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          fetch(`/products/${id}`, { method: 'DELETE' })
+            .then(function (response) {
+              if (response.ok) {
+                getProducts();
+              }
+            })
+            .catch(function (err) {
+              console.error(err);
+              alert(err);
+            });
+        }
+      });
+    }
+
+    const formProduct = document.querySelector('#formProduct');
+    function addProduct() {
+      action = 'add';
+      formProduct.reset();
+      document.querySelector('h4.modal-title').innerText = 'Add new product';
+      productModal.show();
+    }
+
+    formProduct.onsubmit = function (e) {
+      e.preventDefault();
+      productModal.hide();
+      const pname = formProduct.elements['pname'].value;
+      const price = formProduct.elements['price'].value;
+      const amount = formProduct.elements['amount'].value;
+      let url = '/products';
+      let httpMethod = 'POST';
+      let bodyContent = JSON.stringify({ "name": pname, "price": price, "amount": amount });
+      if (action == 'edit') {
+        url = `/products/${editID}`;
+        httpMethod = 'PUT';
+        bodyContent = JSON.stringify({ "name": pname, "price": price, "amount": amount });
+      }
+      fetch(url, {
+        method: httpMethod,
+        headers: { "Content-Type": "application/json" },
+        body: bodyContent
+      })
+        .then(function (response) {
+          if (response.ok) {
+            formProduct.reset();
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'Add/Edit product successfully'
+            })
+            .then(function (result) {
+              getProducts();
+            });
+          } else {
+            throw Error('Bad response');
+          }
+        })
+        .catch(function (err) {
+          console.error(err);
+          alert(err);
+        });
+    }
+
+    function editProduct(product) {
+      action = 'edit';
+      editID = product.id;
+      document.querySelector('h4.modal-title').innerText = 'Edit product';
+      document.querySelector('input[name="pname"]').value = product.name;
+      document.querySelector('input[name="price"]').value = product.price;
+      document.querySelector('input[name="amount"]').value = product.amount;
+      productModal.show();
+    }
+  </script>
+</body>
+</html>

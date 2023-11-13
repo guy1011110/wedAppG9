@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.bundle.min.js"></script>
+    <!-- Notiflix -->
+    <script src="/public/js/notiflix-aio-3.2.6.min.js"></script>
+    <title>Welcome</title>
+</head>
+
+<body class="p-3">
+    <h1>Admin Page</h1>
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-success">Add</button>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="tblProduct">
+        </tbody>
+    </table>
+
+    <script>
+        // get all products
+        getProducts();
+
+        //---------------GET PRODUCTS-----------------
+        async function getProducts() {
+            try {
+                const response = await fetch('/products');
+                if (response.ok) {
+                    const data = await response.json();
+                    let rows = '';
+                    data.forEach(function (product) {
+                        rows += `<tr><td>${product.id}</td>`;
+                        rows += `<td><img src="/public/img/${product.image}"/></td>`;
+                        rows += `<td>${product.name}</td>`;
+                        rows += `<td>${product.price}</td>`;
+                        rows += `<td>${product.amount}</td>`;
+                        rows += `<td><button class="btn btn-warning">Edit</button>`;
+                        rows += `<button class="btn btn-danger" onclick="deleteConfirm(${product.id}, '${product.name}')">Delete</button></td></tr>`;
+                    });
+                    tblProduct.innerHTML = rows;
+                }
+                else if(response.status == 500) {
+                    const data = response.text();
+                    throw Error(data);
+                }
+            } catch (err) {
+                console.error(err.message);
+                Notiflix.Report.failure('Error', err.message, 'Close');
+            }
+        }
+
+        //---------------DELETE a product -----------------
+        function deleteConfirm(...) {
+            // warning
+            Notiflix.Confirm.show('Warning', `Sure to delete ${name}?`, 'Yes', 'No',
+                function okCb() {
+                    deleteProduct(id);
+                }
+            );
+        }
+
+        async function deleteProduct(...) {            
+            const options = {
+                method: ...
+            }
+            try {
+                const response = await fetch(..., ...);
+                if (response.ok) {
+                    const data = await ...;
+                    Notiflix.Report.success('Success', data, 'Close');
+                    // get updated data
+                    ...
+                }
+                else if(response.status == 500) {
+                    const data = response.text();
+                    throw Error(data);
+                }
+            } catch (err) {
+                console.error(err.message);
+                Notiflix.Report.failure('Error', err.message, 'Close');
+            }
+        }
+    </script>
+</body>
+</html>

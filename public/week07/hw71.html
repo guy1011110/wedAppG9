@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+  <script src="/public/js/bootstrap.bundle.min.js"></script>
+  <title>HW1</title>
+</head>
+<body>
+  <h1 class="text-center">MFU Shop</h1>
+  <div id="main" class="container d-flex flex-wrap"></div>
+  <div id="cart" class="container mt-4">
+    <div class="text-center">
+    <p id="cart-info" >Total Product = 0</p>
+    <p id="cart-infoo">Total Price = 0</p>
+    <button id="clear-cart" class="btn btn-danger">Clear Cart</button>
+</div>
+  </div>
+
+  <script>
+    const main = document.querySelector('#main');
+    const cartInfo = document.getElementById('cart-info');
+    const cartInfoo = document.getElementById('cart-infoo');
+    const clearCartBtn = document.getElementById('clear-cart');
+
+
+    let cart = [];
+    let totalPrice = 0;
+
+    function updateCartInfo() {
+      cartInfo.textContent = `Total Product = ${cart.length}`;
+    }
+    function updateCartInfoo() {
+      cartInfoo.textContent = ` Total Price = ${totalPrice} baht`;
+    }
+
+    function addToCart(price) {
+      cart.push(price);
+      totalPrice += price;
+      updateCartInfo();
+      updateCartInfoo();
+    }
+
+    clearCartBtn.addEventListener('click', function () {
+      cart = [];
+      totalPrice = 0;
+      updateCartInfo();
+      updateCartInfoo();
+    });
+
+    fetch('http://localhost:9000/products')
+      .then(function (response) {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw Error('Bad response');
+        }
+      })
+      .then(function (data) {
+        data.forEach(function (product) {
+          const card = createCard(product);
+          main.append(card);
+
+          const addToCartBtn = card.querySelector('.add-to-cart');
+          const price = product.price;
+
+          addToCartBtn.addEventListener('click', function () {
+            addToCart(price);
+          });
+        });
+      })
+      .catch(function (err) {
+        console.error(err);
+        alert('System error, try again later');
+      });
+
+
+    function createCard(product) {
+      const card = document.createElement('div');
+      card.className = "card px-3 py-2 shadow m-3";
+      let cardDetail = `<img class="card-img-top" src="/public/assets/${product.image}" alt="product">`;
+      cardDetail += '<div class="card-body">';
+      cardDetail += `<h4 class="card-title">${product.name}</h4>`;
+      cardDetail += `<p class="card-text">${product.price} baht</p>`;
+      cardDetail += `<button class="btn btn-primary add-to-cart">Add to cart</button></div>`;
+
+      card.innerHTML = cardDetail;
+      return card;
+    }
+  </script>
+</body>
+</html>

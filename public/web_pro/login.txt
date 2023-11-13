@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/css/webp/register.css">
+    <script src="/public/js/bootstrap.bundle.min.js"></script>
+    <title>Login</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row m-5 ">
+
+            <div class="col-6 mt-5">
+                <div class="card shadow" style="border-radius: 40px; width: 500px; height: 700px;">
+                    <div class="card-body m-3 mt-4">
+                        <p class="card-text">Welcome to Asset borrowing system </p>
+                        <h1 class="card-title pb-2">Login</h1>
+                        <div class="d-flex justify-content-center pt-3 pb-4">
+                            <button type="submit" class="form-control border-0"
+                                style="width: 320px;height: 50px; background-color: #E9F1FF; position: relative; color: #4285F4;">
+                                <img src="/public/img/google_icon.png" alt="Google Icon"
+                                    style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 40px;">
+                                Log in with Google
+                            </button>
+                        </div>
+                        <label for="" class="small pb-2">Enter your username or email address</label>
+                        <input type="text" name="username" id="username" class="form-control pb-2"
+                            placeholder="Username or email address">
+                        <label for="" class="small pt-3 pb-2">Enter your Password</label>
+                        <input type="text" name="password1" id="password1" class="form-control " placeholder="Password">
+                        <a href="#" class="d-flex justify-content-end small pt-2 pb-3">Forgot Password ?</a>
+                        <div class="d-flex justify-content-center pt-2">
+                            <button type="submit" class="form-control text-white border-0"
+                                style="width: 180px; background-color : #779341;">Login</button>
+                        </div>
+                        <a href="register.html" class="d-flex justify-content-center small pt-5 ">Register Now.</a>
+
+                    </div>
+                </div>
+            </div>
+            <div class=" col-6 ">
+                
+
+            </div>
+        </div>
+        
+    </div>
+
+</body>
+
+</html>

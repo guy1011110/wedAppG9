@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Icon -->
+
+    <title>Home</title>
+
+</head>
+
+<body>
+
+    <div class="container-fluid">
+
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 pt-3">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/"
+                        class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <i class="fas fa-home me-2" style="color: #11D553; font-size: 1.5rem;"></i>
+                        <!-- Green Home Icon -->
+                        <span class="fs-5 d-none d-sm-inline" style="color: #11D553;">Asset borrowing</span>
+                    </a>
+
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+                        id="menu">
+                        <li>
+                            <a href="/lecturer" class="nav-link px-0 align-middle ">
+                                <i class="fas fa-tachometer-alt me-2" style="color:#5F6165;"></i>
+                                <!-- Dashboard Icon -->
+                                <span class="ms-1 d-none d-sm-inline " style="color:#5F6165;">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/lecturer/browse-asset-list" class="nav-link px-0 align-middle">
+                                <i class="fas fa-box me-2" style="color:#5F6165;"></i> <!-- Asset Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Browse asset list</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/lecturer/Borrowing-requests" class="nav-link px-0 align-middle">
+                                <i class="fas fa-check-circle me-2" style="color:#5F6165;"></i>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Borrowing-requests</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/lecturer/history" class="nav-link px-0 align-middle">
+                                <i class="fas fa-check-circle me-2" style="color:#5F6165;"></i>
+                                <span class="ms-1 d-none d-sm-inline"
+                                    style="color:#5F6165;border-bottom: 2px solid;">History</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <hr>
+                    <div class="dropdown pb-5">
+                        <a href="" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                            id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://github.com/mdo.png" alt="avatar" width="30" height="30"
+                                class="rounded-circle">
+                            <span id="fullName" class="d-none d-sm-inline p-2" style="color:#000000;"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="/settings/lec"><i class="fas fa-cog me-2"></i>Settings</a>
+                            </li>
+                            <li><a class="dropdown-item" id="logout-link" href="/logout"><i
+                                        class="fas fa-sign-out-alt me-2"></i>Sign
+                                    out</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col bg-light ">
+                <div class="row bg-white py-2 ">
+                    <div class="col">
+                        <div class="input-group" style="width: 350px;">
+                            <span class="input-group-text bg-light border-0"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control bg-light border-0" placeholder="Search or type">
+                        </div>
+                        <div class="container-fluid">
+                            <h1 class="text-primary my-3">History</h1>
+                            <div class="dropdown my-3">
+                                <button type="button" class="dropdown-toggle" data-bs-toggle="dropdown">
+
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Link 1</a></li>
+                                    <li><a class="dropdown-item" href="#">Link 2</a></li>
+                                    <li><a class="dropdown-item" href="#">Link 3</a></li>
+                                </ul>
+                            </div>
+                            <table class="table table-striped table-borderd">
+                                <thead class="table-secondary">
+                                    <td>ProductName</td>
+                                    <td>BorrowedDate</td>
+                                    <td>ReturnedDate</td>
+                                    <td>Whoborrowed</td>
+                                    <td>Whoapproved</td>
+                                </thead>
+                                <tbody id="table_body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fetch the user's full name and update the UI
+            fetch("/user")
+                .then(response => response.json())
+                .then(data => {
+                    const fullNameElement = document.getElementById('fullName');
+                    if (data.fullname) {
+                        fullNameElement.textContent = data.fullname;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+
+            // Logout
+            document.getElementById('logout-link').addEventListener('click', function (e) {
+                e.preventDefault();
+                fetch('/logout')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.redirect) {
+                            window.location.href = data.redirect;
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                // Clear session on the client-side
+                fetch('/clear-session')
+                    .then(response => response.json())
+                    .catch(error => console.error('Error:', error));
+                // Replace current URL with the home page
+                history.replaceState(null, '', '/');
+            });
+        });
+        const table_body = document.querySelector('#table_body');
+        const students = [
+            {
+                ProductName: 'Item1',
+                BorrowedDate: '0/00/0000',
+                ReturnedDate: '0/00/0000',
+                Whoborrowed: 'Mr/Miss....',
+                Whoapproved: 'Mr/Miss....'
+            },
+            {
+                ProductName: 'Item1',
+                BorrowedDate: '0/00/0000',
+                ReturnedDate: '0/00/0000',
+                Whoborrowed: 'Mr/Miss....',
+                Whoapproved: 'Mr/Miss....'
+            },
+            {
+                ProductName: 'Item1',
+                BorrowedDate: '0/00/0000',
+                ReturnedDate: '0/00/0000',
+                Whoborrowed: 'Mr/Miss....',
+                Whoapproved: 'Mr/Miss....'
+            },
+            {
+                ProductName: 'Item1',
+                BorrowedDate: '0/00/0000',
+                ReturnedDate: '0/00/0000',
+                Whoborrowed: 'Mr/Miss....',
+                Whoapproved: 'Mr/Miss....'
+            },
+            {
+                ProductName: 'Item1',
+                BorrowedDate: '0/00/0000',
+                ReturnedDate: '0/00/0000',
+                Whoborrowed: 'Mr/Miss....',
+                Whoapproved: 'Mr/Miss....'
+            },
+            {
+                ProductName: 'Item1',
+                BorrowedDate: '0/00/0000',
+                ReturnedDate: '0/00/0000',
+                Whoborrowed: 'Mr/Miss....',
+                Whoapproved: 'Mr/Miss....'
+            },
+            {
+                ProductName: 'Item1',
+                BorrowedDate: '0/00/0000',
+                ReturnedDate: '0/00/0000',
+                Whoborrowed: 'Mr/Miss....',
+                Whoapproved: 'Mr/Miss....'
+            }
+        ];
+        let data = '';
+        for (stu of students) {
+            data += `<tr><td>${stu.ProductName}</td>`;
+            data += `<td>${stu.BorrowedDate}</td>`;
+            data += `<td>${stu.ReturnedDate}</td>`;
+            data += `<td>${stu.Whoborrowed}</td>`;
+            data += `<td>${stu.Whoapproved}</td>`;
+
+        }
+
+        table_body.innerHTML = data;
+
+
+        // attach delete function to delete buttons
+
+    </script>
+</body>
+
+</html>

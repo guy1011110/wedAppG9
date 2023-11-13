@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Printing Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .options {
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="number"],
+        input[type="checkbox"] {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Printing Shop</h1>
+        <div class="options">
+            <label for="pages">Enter Number of Pages:</label>
+            <input type="number" id="pages" placeholder="Number of Pages" required>
+            <br>
+            <label>Choose Printing Type:</label>
+            <div class="radio-options">
+                <input type="radio" id="bw" name="printType" value="bw" required>
+                <label for="bw">Black & White</label>
+                <input type="radio" id="color" name="printType" value="color" required>
+                <label for="color">Color</label>
+            </div>
+            <br>
+            <input type="checkbox" id="twoSides">
+            <label for="twoSides">Two-sided Printing (20% reduction)</label>
+            <br>
+            <button id="calculate">Calculate Price</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('calculate').addEventListener('click', function () {
+            
+            const numberOfPages = parseInt(document.getElementById('pages').value);
+            const printType = document.querySelector('input[name="printType"]:checked').value;
+            const twoSides = document.getElementById('twoSides').checked;
+
+       
+            let pricePerPage = 0;
+            if (printType === 'bw') {
+                pricePerPage = 2;
+            } else if (printType === 'color') {
+                pricePerPage = 5;
+            }
+
+            let totalPrice = numberOfPages * pricePerPage;
+            if (twoSides) {
+                totalPrice *= 0.8; // 20% reduction for two-sided printing
+            }
+
+            // Ceil the total price to the nearest integer
+            totalPrice = Math.ceil(totalPrice);
+
+            // Display the result
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = `Total Price: ${totalPrice} baht`;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/web_pro/login regis/register.css">
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/public/js/notiflix-aio-3.2.6.min.js"></script>
+    <title>Login</title>
+    <style>
+        .transparent-card {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row m-5 ">
+
+            <div class="col-6 mt-5">
+                <div class="card shadow transparent-card" style="border-radius: 40px; width: 500px; height: 700px;">
+                    <div class="card-body m-3 mt-4">
+                        <p class="card-text " style="color: #11D553">Welcome to Asset borrowing system </p>
+                        <h1 class="card-title pb-2">Login</h1>
+
+                        <!-- Google Login -->
+                        <div class="d-flex justify-content-center pt-3 pb-4">
+                            <!-- You might want to add its functionality later -->
+                            <button type="button" class="form-control border-0"
+                                style="width: 320px;height: 50px; background-color: #E9F1FF; position: relative; color: #4285F4;">
+                                <img src="/public/img/google_icon.png" alt="Google Icon"
+                                    style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 40px;">
+                                Log in with Google
+                            </button>
+                        </div>
+
+                        <!-- Login Form -->
+                        <form id="formLogin">
+
+                            <label for="txtUsername" class="small pb-2">Enter your username or email address</label>
+                            <input type="text" class="form-control pb-2" name="txtUsername" id="txtUsername" placeholder="Username or email address" required>
+
+                            <label for="txtPassword" class="small pt-3 pb-2">Enter your Password</label>
+                            <input type="password" class="form-control" name="txtPassword" id="txtPassword" placeholder="Password" required>
+
+                            <a href="#" class="d-flex justify-content-end small pt-2 pb-3">Forgot Password ?</a>
+
+                            <div class="d-flex justify-content-center pt-2">
+                                <button type="submit" class="form-control text-white border-0"
+                                    style="width: 180px; background-color : #779341;">Login</button>
+                            </div>
+
+                            <a href="http://localhost:3000/register" class="d-flex justify-content-center small pt-5">Register Now.</a>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <!-- Maybe some image or design here? -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+       const formLogin = document.querySelector('#formLogin');
+formLogin.onsubmit = async function (e) {
+    e.preventDefault();
+
+    const username = formLogin.querySelector('[name="txtUsername"]').value;
+    const password = formLogin.querySelector('[name="txtPassword"]').value;
+
+    try {
+        const options = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "username": username, "password": password }),
+        };
+
+        const response = await fetch('/login', options);
+
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem('username', data.username);
+            localStorage.setItem('userid', data.userid.toString()); 
+
+            const roleResponse = await fetch('/userRole', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ "username": data.username }),
+            });
+
+            if (roleResponse.ok) {
+                const roleData = await roleResponse.json();
+                const userRole = roleData.role;
+
+                if (userRole === "student") {
+                    window.location.href = "/student";
+                } else if (userRole === "staff") {
+                    window.location.href = "/staff";
+                } else if (userRole === "lecturer") {
+                    window.location.href = "/lecturer";
+                } else {
+                    alert("Invalid role");
+                }
+            } else {
+                alert("Failed to fetch user role");
+            }
+        } else if (response.status === 401) {
+            const errorMessage = await response.text();
+            alert(errorMessage);
+        } else {
+            throw Error('Connection error');
+        }
+    } catch (err) {
+        console.error(err.message);
+        alert(err.message); 
+    }
+}
+
+    </script>
+</body>
+
+</html>

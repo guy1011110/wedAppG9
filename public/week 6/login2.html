@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Web Storage Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h4>Welcome</h4>
+        <button class="btn btn-danger">Sign Out</button>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Get the saved username from localStorage
+        const user = localStorage.username;
+
+        // Show the username in the welcome message
+        document.querySelector('h4').innerHTML = "Welcome <b>" + user + "</b>";
+
+        // Sign out button click event
+        document.querySelector('button').onclick = function() {
+            // Clear the username from web storage
+            localStorage.removeItem("username");
+            // Return to the login page
+            window.location.replace("login1.html");
+        }
+    </script>
+</body>
+</html>

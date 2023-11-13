@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.min.js"></script>
+    <script src="/public/js/hw22.js"></script>
+</head>
+<body>
+    <div class="p-4">
+        <h1>Registration</h1>
+        <form id="registrationForm">
+           <p></p> <input style="width: 300px;" type="text" id="username" name="username" placeholder="Enter Username" required><br>
+            <p></p><input style="width: 300px;"  type="password" id="password" name="password" placeholder="Enter password" required><br>
+          <p></p>  <input style="width: 300px;"  type="password" id="repassword" name="repassword" placeholder="Re-enter password" required><br>
+            
+           <p></p> <p class="text-primary" id="captchaDisplay"></p>
+           <p></p> <input style="width: 300px;"  type="text" id="captchaInput" name="captcha" placeholder="Enter captcha" required><br>
+           <p></p> <button class="btn bg-primary text-white" type="button" onclick="registerUser()">Register</button>
+        </form>
+        <p id="error" style="color: red;"></p>
+    </div>
+    <p></p><a href="http://127.0.0.1:5500/public/week4/www.html">Link1</a> 
+
+<script>
+    const min = 1000;
+const max = 9999;
+const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+document.getElementById('captchaDisplay').textContent = 'Captcha = ' + randomNumber;
+</script>
+ 
+</body>
+</html>

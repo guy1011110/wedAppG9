@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"><!-- Icon -->
+    <title>Home</title>
+</head>
+<style>
+    .card-img-top {
+    height: 270px; /* Example height */
+    object-fit: cover; /* This will cover the area of the div without stretching the image */
+    width: 100%; /* This will ensure the image takes up the full width of the card */
+}
+
+</style>
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 pt-3">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <i class="fas fa-home me-2" style="color: #11D553; font-size: 1.5rem;"></i>
+                        <span class="fs-5 d-none d-sm-inline" style="color: #11D553;">Asset borrowing</span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fas fa-tachometer-alt me-2" style="color:#5F6165;"></i>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fas fa-box me-2" style="color:#5F6165;"></i> <!-- Asset Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;border-bottom: 2px solid">Asset</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fas fa-check-circle me-2" style="color:#5F6165;"></i>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Asset Accept</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="far fa-calendar me-2" style="color:#5F6165;"></i> <!-- Calendar Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Calendar</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <hr>
+                    <div class="dropdown pb-5">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                            id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://github.com/mdo.png" alt="avatar" width="30" height="30"
+                                class="rounded-circle">
+                                <span class="d-none d-sm-inline mx-1" id="displayUsername" style="color:#5F6165;">Userrrrr</span>
+                            </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class a="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col bg-light">
+                <div class="row bg-white py-2">
+                    <div class="col">
+                        <div class="input-group" style="width: 350px;">
+                            <span class="input-group-text bg-light border-0"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control bg-light border-0" placeholder="Search or type" id="search-input">
+                            <button class="btn btn-primary" id="search-button">Search</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-primary p-3"><h1>Asset</h1></div>
+                <div id="main" class="container d-flex flex-wrap">
+                    
+                </div>
+                
+
+             
+            </div>
+        </div>
+    </div>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    getAssets(); // Call the function to load assets initially
+
+    // Add event listener to the search button
+    document.getElementById('search-button').addEventListener('click', function() {
+        const searchTerm = document.getElementById('search-input').value.toLowerCase();
+        getAssets(searchTerm); // Call getAssets function with the search term
+    });
+});
+
+function getAssets(searchTerm = '') {
+    fetch('/assets')
+        .then(response => response.json())
+        .then(assets => {
+            const mainContainer = document.getElementById('main');
+            mainContainer.innerHTML = ''; // Clear the container before adding new cards
+
+            assets = assets.filter(asset => asset.Assetstatus === 'Available' && asset.Assetname.toLowerCase().includes(searchTerm));
+            
+            assets.forEach(asset => {
+                const card = document.createElement('div');
+                card.className = 'card mx-1 mb-3 shadow-sm';
+                card.style.width = '17.5rem';
+                card.innerHTML = `
+                    <img src="/public/assets/${asset.Assetimg}" class="card-img-top" alt="${asset.Assetname}">
+                    <div class="card-body">
+                        <h5 class="card-title">${asset.Assetname}</h5>
+                        <p class="card-text">Status: ${asset.Assetstatus}</p>
+                        <p class="card-text">Added by Staff ID: ${asset.Staffaddid}</p>
+                        <button class="btn btn-outline-primary" onclick="borrowAsset(${asset.Assetid})">Select</button>
+                    </div>
+                `;
+                mainContainer.appendChild(card);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function borrowAsset(assetId) {
+    Swal.fire({
+        title: 'Borrow Asset',
+        
+        html: `
+            <input type="date" id="borrow-date" class="swal2-input" placeholder="Borrow date">
+            <input type="date" id="return-date" class="swal2-input" placeholder="Return date">
+        `,
+        confirmButtonText: 'Submit',
+        focusConfirm: false,
+        preConfirm: () => {
+            const borrowDate = document.getElementById('borrow-date').value;
+            const returnDate = document.getElementById('return-date').value;
+            if (!borrowDate || !returnDate) {
+                Swal.showValidationMessage("Please enter both borrow and return dates.");
+            }
+            return { borrowDate: borrowDate, returnDate: returnDate };
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const username = localStorage.getItem('username'); // Retrieve the username from local storage
+            fetch('/borrow-asset', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    assetId: assetId,
+                    borrowDate: result.value.borrowDate,
+                    returnDate: result.value.returnDate,
+                    username: username // Include the username in the POST request body
+                }),
+            })
+            
+            .then(response => response.json())
+            .then(data => {
+                
+                Swal.fire('Success', 'The asset has been successfully borrowed.', 'success');
+                // Refresh the assets or update the UI as needed.
+            }).then(data => {
+                // Now let's update the asset status
+                return fetch(`/update-asset-status/${assetId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ status: 'Pending' }) // Update status to 'Pending'
+                });
+            })
+            .then(updateResponse => {
+                if (!updateResponse.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return updateResponse.json();
+            })
+            .then(updateData => {
+                Swal.fire('Success', 'The asset status has been updated to pending.', 'success');
+                // Refresh the assets or update the UI as needed.
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                Swal.fire('Error', 'There was an error borrowing the asset.', 'error');
+            });
+        }
+    });
+}
+
+window.onload = function () {
+
+
+const userid = localStorage.getItem('userid');
+const username = localStorage.getItem('username');
+if (username) {
+document.getElementById('displayUsername').textContent = username;
+document.getElementById('displayUserid').textContent = userid;
+} else {
+
+document.getElementById('displayUsername').textContent = 'Guest';
+document.getElementById('displayUserid').textContent = 'ID';
+}}
+    </script>
+    
+</body>
+</html>

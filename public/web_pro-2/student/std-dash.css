@@ -1,0 +1,48 @@
+
+        /* Calendar Styles */
+        .calendar {
+            background-color: #fff;
+            border-radius: 8px;
+            margin:  auto;
+            padding: 20px;
+            max-width: 350px;
+            font-family: Arial, sans-serif;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .calendar-header h2 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .calendar-days {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+        }
+        .calendar-days .day {
+            width: 14.28%;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .calendar-dates {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .calendar-dates .date {
+            width: 14.28%;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .current-date {
+            background-color: #779341;
+            color: white;
+            border-radius: 50%;
+        }
+        /* Additional styles */
+        /* ... */
+    

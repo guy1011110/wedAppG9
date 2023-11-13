@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="p-4">
+        <h1>Registration</h1>
+        <form id="registrationForm">
+            <input type="text" id="username" name="username" placeholder="Enter Username" required><br>
+            <input type="password" id="password" name="password" placeholder="Enter password" required><br>
+            <input type="password" id="repassword" name="repassword" placeholder="Re-enter password" required><br>
+            <h6 class="text-primary">Captcha</h6>
+            <p id="captchaDisplay"></p>
+            <input type="text" id="captchaInput" name="captcha" placeholder="Enter captcha" required><br>
+            <button class="btn bg-primary text-white" type="button" onclick="registerUser()">Register</button>
+        </form>
+        <p id="error" style="color: red;"></p>
+    </div>
+
+    <script>
+        // Generate a random number for CAPTCHA
+        const min = 1000;
+        const max = 9999;
+        const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+        document.getElementById('captchaDisplay').textContent = 'Captcha = ' + randomNumber;
+
+        function registerUser() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const repassword = document.getElementById('repassword').value;
+            const captchaInput = document.getElementById('captchaInput').value;
+            const errorElement = document.getElementById('error');
+
+            // Reset previous error messages
+            errorElement.textContent = "";
+
+            if (!username) {
+                errorElement.style.color = "red";
+                errorElement.textContent = "Please enter a username.";
+                return;
+            }
+
+            if (password !== repassword) {
+                errorElement.style.color = "red";
+                errorElement.textContent = "Passwords do not match. Please try again.";
+                return;
+            }
+
+            if (parseInt(captchaInput) !== randomNumber) {
+                errorElement.style.color = "red";
+                errorElement.textContent = "Wrong captcha. Please try again.";
+                return;
+            }
+
+            // Registration successful
+            errorElement.style.color = "green";
+            errorElement.textContent = "Registration successful!";
+            // You can redirect to another page or perform other actions here
+        }
+    </script>
+</body>
+</html>
+
+</html>

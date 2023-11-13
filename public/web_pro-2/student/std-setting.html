@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+   
+    
+<script src="/public/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"><!-- Icon -->
+    <title>Settings</title>
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 pt-3">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/"
+                        class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <i class="fas fa-home me-2" style="color: #11D553; font-size: 1.5rem;"></i>
+                        <!-- Green Home Icon -->
+                        <span class="fs-5 d-none d-sm-inline" style="color: #11D553;">Asset borrowing</span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+                        id="menu">
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fas fa-tachometer-alt me-2" style="color:#5F6165;"></i>
+                                <!-- Dashboard Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fas fa-box me-2" style="color:#5F6165;"></i> <!-- Asset Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Asset</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fas fa-check-circle me-2" style="color:#5F6165;"></i>
+                                <!-- Asset Accept Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Asset Accept</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="far fa-calendar me-2" style="color:#5F6165;"></i> <!-- Calendar Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Calendar</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <hr>
+                    <div class="dropdown pb-5">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                            id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://github.com/mdo.png" alt="avatar" width="30" height="30"
+                                class="rounded-circle">
+                            <span class="d-none d-sm-inline mx-1" style="color:#5F6165;">Student1</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col bg-light ">
+                <div class="row bg-white py-2 ">
+                    <div class="col">
+                        <div class="input-group" style="width: 350px;">
+                            <span class="input-group-text bg-light border-0"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control bg-light border-0" placeholder="Search or type">
+                        </div>
+                    </div>
+                </div>
+                <div class="row bg-white m-4 ">
+                    <div class="p-4">
+                    <h3 class="" style="color: #4285F4;">Settings</H3>
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active"  id="pills-profile-tab"
+                                data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab"
+                                aria-controls="pills-profile" aria-selected="true">Profile</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link"  id="pills-password-tab"
+                                data-bs-toggle="pill" data-bs-target="#pills-password" type="button" role="tab"
+                                aria-controls="pills-password" aria-selected="true">Password</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link"  id="pills-email-tab"
+                                data-bs-toggle="pill" data-bs-target="#pills-email" type="button" role="tab"
+                                aria-controls="pills-email" aria-selected="false">Email</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content " id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-profile" role="tabpanel"
+                            aria-labelledby="pills-profile-tab">
+                            <div class=" pt-3">
+                                <h5 class="" style="color: #4285F4;">Profile</h5>
+                                <a href="#">Update your photo and personal details here.</a>
+                                <hr>
+                                <div class="row justify-content-center align-items-start g-2">
+                                    <div class="col p-2">
+                                        <label for="">Live in</label>
+                                        <input type="text" class="form-control" style="width: 400px;" value=""
+                                            placeholder="56">
+                                    </div>
+                                    <div class="col p-2">
+                                        <label for="">Street Address</label>
+                                        <input type="text" class="form-control" style="width: 500px;" value=""
+                                            placeholder="454">
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center align-items-start g-2">
+                                    <div class="col p-2">
+                                        <label for="">Email Address</label>
+                                        <input type="text" class="form-control" style="width: 650px;" value=""
+                                            placeholder="455@gmail.com">
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center align-items-start g-2">
+                                    <div class="col p-2">
+                                        <label for="">Date Of Birth</label>
+                                        <input type="date" class="form-control" style="width: 400px;" value="">
+                                    </div>
+                                    <div class="col p-2">
+                                        <label for="">Gender</label>
+                                        <input type="text" class="form-control" style="width: 500px;" value=""
+                                            placeholder="Male">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row justify-content-center align-items-start g-2" style="height: 80px;">
+                                </div>
+                                <div class="row justify-content-center align-items-start g-2">
+                                    <div class="col p-2">
+                                        <h6 class="" style="color: #4285F4;">Social Profiles</h6>
+                                    </div>
+                                    <div class="col p-2">
+                                        <div class="pb-3">
+                                            <input type="text" class="form-control" style="width: 400px;" value=""
+                                                placeholder="facebook.com/">
+                                        </div>
+                                        <div class="pb-3">
+                                            <input type="text" class="form-control" style="width: 400px;" value=""
+                                                placeholder="twitter.com/">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pills-password" role="tabpanel"
+                            aria-labelledby="pills-password-tab">
+                            <div class=" pt-3">
+                                <h5 class="" style="color: #4285F4;">Password</h5>
+                                <label for="">Update your Password.</label>
+                                <hr>
+                                <div class="row justify-content-center align-items-start g-2">
+                                    <div class="col p-2">
+                                        <label for="">Old-Password</label>
+                                        <input type="password" class="form-control" style="width: 400px;" value=""
+                                            placeholder="Old-Password">
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center align-items-start g-2">
+                                    <div class="col p-2">
+                                        <label for="">New-Password</label>
+                                        <input type="password" class="form-control" style="width: 400px;" value=""
+                                            placeholder="New-Password">
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center align-items-start g-2">
+                                    <div class="col p-2">
+                                        <label for="">Re-New-Password</label>
+                                        <input type="password" class="form-control" style="width: 400px;" value=""
+                                            placeholder="Re-New-Password">
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center align-items-start g-2">
+                                    <div class="col p-2">
+                                        <button type="button" class="btn"
+                                            style="background-color: #a6f6c2;">confirm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="pills-email" role="tabpanel" aria-labelledby="pills-email-tab">
+                        <div class=" pt-3">
+                            <h5 class="" style="color: #4285F4;">Email</h5>
+                            <label for="">Update your Email.</label>
+                            <hr>
+                            <div class="row justify-content-center align-items-start g-2">
+                                <div class="col p-2">
+                                    <h6 class="" style="color: #4285F4;">Email</h6>
+                                </div>
+                                <div class="col p-2">
+                                    <div class="pb-3">
+                                        <input type="text" class="form-control" style="width: 400px;" value=""
+                                            placeholder="lamduan.mfu.ac.th/">
+                                    </div>
+                                </div>
+                                <div class="col p-2">
+                                    <button type="submit" class="form-control border-0"
+                                        style="width: 320px;height: 50px; background-color: #E9F1FF; position: relative; color: #4285F4;">
+                                        <img src="/public/img/google_icon.png" alt="Google Icon"
+                                            style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 40px;">
+                                        Sign in with Google
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</body>
+
+</html>

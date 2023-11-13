@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="/public/js/notiflix-aio-3.2.6.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>See-the-borrowing-requests</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 pt-3">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/"
+                        class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <i class="fas fa-home me-2" style="color: #11D553; font-size: 1.5rem;"></i>
+                        <!-- Green Home Icon -->
+                        <span class="fs-5 d-none d-sm-inline" style="color: #11D553;">Asset borrowing</span>
+                    </a>
+
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+                        id="menu">
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fas fa-tachometer-alt me-2" style="color:#5F6165;"></i>
+                                <!-- Dashboard Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fas fa-box me-2" style="color:#5F6165;"></i> <!-- Asset Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Asset</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fas fa-check-circle me-2" style="color:#5F6165;"></i>
+                                <!-- Asset Accept Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Asset Accept</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="far fa-calendar me-2" style="color:#5F6165;"></i> <!-- Calendar Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Calendar</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle" id="Borrowing_requests">
+                                <i class="fa-solid fa-list me-2" style="color:#5F6165;"></i>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Borrowing requests</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle" id="Approve_or_disapprove">
+                                <i class="fa-solid fa-circle-check me-2" style="color:#5F6165;"></i>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Approve or
+                                    disapprove</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <hr>
+                    <div class="dropdown pb-5">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                            id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://github.com/mdo.png" alt="avatar" width="30" height="30"
+                                class="rounded-circle">
+                            <span class="d-none d-sm-inline mx-1" style="color:#5F6165;">Student1</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col bg-light ">
+                <div class="row bg-white py-2 ">
+                    <div class="col">
+                        <div class="input-group" style="width: 350px;">
+                            <span class="input-group-text bg-light border-0"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control bg-light border-0 " placeholder="Search Borrower Name"
+                                id="Search_text">
+                            <button class="btn btn-primary border-1 " id="Search_btn">Search</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Blak box -->
+                <div class="text-primary h5 mt-3 mx-3">Approve or disapprove</div>
+
+               <div class="container mt-5">
+    <h2>Borrowing Requests</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Req ID</th>
+                <th>Borrower Name</th>
+                <th>AssetName</th>
+                <th>Borrow Date</th>
+                <th>Return Date</th>
+                <th>Status</th>
+                <th>Action</th>
+                
+            </tr>
+        </thead>
+        <tbody id="tblBorrowReq">
+            <!-- Data will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+</div>
+                <!-- ====================================================== -->
+              
+
+            
+                <!-- ====================================================== -->
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+    <script>
+        function searchBorrowerName() {
+    const searchText = document.getElementById('Search_text').value.toLowerCase();
+    fetchBorrowingRequests(searchText);
+}
+document.getElementById('Search_btn').addEventListener('click', searchBorrowerName);
+
+function fetchBorrowingRequests(searchText = '')     {
+  fetch('/borrow-assett')
+      .then(response => {
+          if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+      })
+      .then(data => {
+          const tblBorrowReq = document.getElementById('tblBorrowReq');
+          let rows = '';
+          // Filter the data to only include rows with a status of 'Pending'
+          const filteredRequests = data.filter(req => 
+                req.Status === 'Pending' && 
+                (!searchText || req.Borrowname.toLowerCase().includes(searchText)));
+                filteredRequests.forEach(req => {
+                rows += `<tr>
+                    <td>${req.Reqid}</td>
+                    <td>${req.Borrowname}</td>
+                    <td>${req.Assetname}</td>
+                    <td>${req.Borrowdate}</td>
+                    <td>${req.ReturnDate}</td>
+                    <td>${req.Status}</td>
+                    <td>
+                        <button onclick="approveRequest(this, ${req.Reqid})" class="btn btn-success">Approve</button>
+                        <button onclick="disapproveRequest(this, ${req.Reqid})" class="btn btn-danger">Disapprove</button>
+                    </td>
+                </tr>`;
+            });
+          tblBorrowReq.innerHTML = rows;
+      })
+      .catch(error => {
+        
+        Notiflix.Notify.failure('Failed to disapprove request!');
+      });
+}
+
+function approveRequest(button, requestId) {
+    const username = localStorage.getItem('username') || ''; // Get username or default to empty string
+
+    // Now pass this username directly to the SweetAlert as the initial value
+    Swal.fire({
+        title: 'Approve Request',
+        input: 'text',
+        inputLabel: 'Lect name',
+        inputValue: username,  
+        showCancelButton: true,
+        confirmButtonText: 'Submit',
+        inputValidator: (value) => {
+            if (!value) {
+                return 'You need to write something!';
+            }
+        }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // AJAX request to the server with the username and requestId
+      fetch('/approve-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ requestId: requestId, username: result.value }),
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Update the UI to reflect the new status
+        button.closest('tr').querySelector('td:last-child').textContent = 'Approved';
+        Notiflix.Notify.success('Request Approved!');
+      })
+      .catch(error => {
+        
+        Notiflix.Notify.success('Request Approved!');
+      });
+    }
+  });
+}
+function disapproveRequest(button, requestId) {
+    const username = localStorage.getItem('username') || '';
+  Swal.fire({
+    title: 'Disapprove Request',
+    input: 'text',
+    
+    inputLabel: 'Reason for disapproval',
+    inputPlaceholder: 'Enter the reason',
+    showCancelButton: true,
+    confirmButtonText: 'Submit',
+    inputValidator: (value) => {
+      if (!value) {
+        return 'You need to write something!';
+      }
+    }
+  }).then((result) => {
+    if (result.isConfirmed && result.value) {
+      fetch('/disapprove-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ requestId: requestId, reason: result.value, username  }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        button.closest('tr').querySelector('td:last-child').textContent = 'Disapproved';
+        Notiflix.Notify.error('Dis Approved!');
+      })
+      .catch(error => {
+        
+       Notiflix.Notify.error('Dis Approved!');
+      });
+    }
+  });
+}
+
+window.onload = function () {
+    fetchBorrowingRequests();  // Make sure this is called to load your requests
+
+    const username = localStorage.getItem('username');
+    if (username) {
+        document.getElementById('displayUsername').textContent = 'Lect: ' + username;
+        // Ensure you have an element with id 'displayUsername' in your HTML to show the username
+    } else {
+        document.getElementById('displayUsername').textContent = 'Guest';
+    }
+};
+
+
+    </script>
+</body>
+
+</html>

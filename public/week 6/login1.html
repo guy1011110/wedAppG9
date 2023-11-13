@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Web Storage Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+    
+    <div class="container">
+       <input type="text" class="form-control my-2" placeholder="Username"
+           id="txtUsername">
+       <input type="password" class="form-control mb-2" placeholder="Password
+           " id="txtPassword">
+           <input type="checkbox" id="cb_remember" class="form-check-input">Remember me
+           <br>
+       <button class="btn btn-outline-primary  mb-2">Sign in</button>
+       <div id="alertLogin" class="alert alert-danger" style="display: none">
+           <strong>Error</strong> Your username or password is incorrect!
+       </div>
+       <br><img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <br><img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <br><img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <br><img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <br><img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <br><img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       <img src="/public/img/catt.gif" width="50px" alt="">
+       
+</div>
+    <!-- JS -->
+    <script>
+       //if login already
+       if (localStorage.username !== undefined) {
+           //jump to next page
+           window.location.replace("login2.html");
+}
+       document.querySelector('button').onclick = function () {
+           //get inputs
+           const username = document.querySelector('#txtUsername').value;
+           const password = document.querySelector('#txtPassword').value;
+//verify
+           if (username == "Guy" && password == "1234") {
+              //keep username in web storage
+              const cb_remember = document.querySelector('#cb_remember');
+              if(cb_remember.checked){
+                localStorage.username = username;
+              }
+              else{
+                sessionStorage.username = username;
+              }
+              //jump to next page
+              Swal.fire({
+                icon: 'HIHIHI',
+                title: 'LogIn susss',
+                text: 'ngnsjglksflm',
+                width: 600,
+                padding: '3em',
+                color: '#dd796a',
+                backdrop: `
+                  rgba(0,0,123,0.4)
+                  url("/public/img/catt.gif")
+                  left top
+                  no-repeat
+                `,
+                
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                  
+                    window.location.assign('login2.html');
+                }
+            });
+}
+else {
+              // show wrong login alert
+              document.querySelector('#alertLogin').style.display = "block";
+           }
+}
+    </script>
+</body>
+</html>

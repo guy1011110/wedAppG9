@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.min.js"></script>
+</head> 
+<body>
+    <div class="p-4" >
+        <h1>Calculator</h1>
+       <div><p></p> <input type="text" id="num1" placeholder="Enter first number">
+       <p></p> <select style="width: 200px;" id="operator">
+            <option value="+">(+)</option>
+            <option value="-">(-)</option>
+            <option value="*">(*)</option>
+            <option value="/">(/)</option>
+        </select>
+       <p></p> <input type="text" id="num2" placeholder="Enter second number">
+       <p></p> <button class="btn bg-primary text-white" id="calculate" onclick="calculateResult()">Calculate</button>
+       <p></p> <input type="text" id="result" placeholder="Result" readonly>
+    </div>
+</div>
+
+    <script>
+        function calculateResult() {
+            const num1 = parseFloat(document.getElementById("num1").value);
+            const num2 = parseFloat(document.getElementById("num2").value);
+            const operator = document.getElementById("operator").value;
+            let result;
+
+            switch (operator) {
+                case "+":
+                    result = num1 + num2;
+                    break;
+                case "-":
+                    result = num1 - num2;
+                    break;
+                case "*":
+                    result = num1 * num2;
+                    break;
+                case "/":
+                    if (num2 !== 0) {
+                        result = num1 / num2;
+                    } else {
+                        result = "Error: Division by zero";
+                    }
+                    break;
+                default:
+                    result = "Invalid operator";
+            }
+
+            document.getElementById("result").value = result;
+        }
+    </script>
+</body>
+</html>

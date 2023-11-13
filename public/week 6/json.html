@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+
+
+
+    <div class="container">
+        <!-- <p class="">Converting JSON string to JavaScript
+            object</p>
+        <p id="rawJSON"></p>
+        <p id="name"></p>
+        <div class="form-check-inline">
+            <label class="form-check-label mr-2">
+                <input type="radio" class="form-check-input" name="radioGender
+                      " value="Male" checked>Male
+            </label>
+            <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="radioGender
+                      " value="Female">Female
+            </label>
+        </div> -->
+
+
+
+        <select id="student" class="form-select">
+            <option value="Lora">Lora</option>
+            <option value="Peter">Peter</option>
+            <option value="Boat">Boat</option>
+            
+
+        </select>
+        <button class=" btn btn-danger"> OK</button>
+    </div>
+    <div id="alertLogin" class="alert alert-danger" style="display: none">
+         <strong>Error</strong> Your username or password is incorrect!
+         </div>
+    <script>
+        // const jsonString = '{"name":"Lora", "gender":true}';
+        // // raw JSON
+        // document.querySelector('#rawJSON').innerHTML = "<b>Raw JSON</b>: " +
+        //     jsonString;
+        // // convert JSON to JS object
+        // const jsObject = JSON.parse(jsonString);
+        // // name
+        // document.querySelector('#name').innerHTML = "<b>Name</b>: " +
+        //     jsObject.name;
+        // // gender
+        // if (jsObject.gender === true) {
+        //     document.querySelector('input[name="radioGender"][value="Female"]'
+        //     ).checked = true;
+        // }
+        const json_students ='[{"name": "Lora"},{"name": "Peter",},{"name": "Boat",}]';
+        const students = JSON.parse(json_students);
+        // console.log(students[0].name)
+
+        let data ='';
+       
+        document.querySelector('#student').innerHTML = data;
+
+
+
+        document.querySelector('button').onclick = function () {
+           //get inputs
+           const name = document.querySelector('#txtUsername').value;
+           
+//verify
+           if (name == "Lora" ) {
+              //keep username in web storage
+              localStorage.username = username;
+              //jump to next page
+              window.location.replace("storage-welcome.html");
+}
+else {
+              // show wrong login alert
+              document.querySelector('#alertLogin').style.display = "block";
+           }
+}
+    </script>
+</body>
+
+</html>
