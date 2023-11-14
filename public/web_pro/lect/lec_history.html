@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Icon -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/public/css/std-dash.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/public/css/bootstrap-css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="/public/js/notiflix-aio-3.2.6.min.js"></script>
+    <title>lec_history</title>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 pt-3">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/"
+                        class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <i class="fas fa-home me-2" style="color: #11D553; font-size: 1.5rem;"></i>
+                        <span class="fs-5 d-none d-sm-inline" style="color: #11D553;">Asset borrowing</span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+                        id="menu">
+
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle ">
+                                <i class="fas fa-tachometer-alt me-2" style="color:#5F6165;"></i>
+                                <!-- Dashboard Icon -->
+                                <span class="ms-1 d-none d-sm-inline " id="dashboard"
+                                    style="color:#5F6165;border-bottom: 2px solid;">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fas fa-box me-2" style="color:#5F6165;"></i> <!-- Asset Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Asset</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="fas fa-check-circle me-2" style="color:#5F6165;"></i>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Asset Accept</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <i class="far fa-calendar me-2" style="color:#5F6165;"></i> <!-- Calendar Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Calendar</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle" id="Borrowing_requests">
+                                <i class="fa-solid fa-list me-2" style="color:#5F6165;"></i>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Borrowing requests</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle" id="Approve_or_disapprove">
+                                <i class="fa-solid fa-circle-check me-2" style="color:#5F6165;"></i>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Approve or
+                                    disapprove</span>
+                            </a>
+                        </li>
+                    </ul>
+                    </ul>
+
+                    <hr>
+                    <div class="dropdown pb-5">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                            id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://github.com/mdo.png" alt="avatar" width="30" height="30"
+                                class="rounded-circle">
+                            <span class="d-none d-sm-inline mx-1" id="displayUsername"
+                                style="color:#5F6165;">Userrrrr</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class a="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col bg-light">
+                <div class="row bg-white py-2 ">
+                    <div class="col">
+                        <div class="input-group" style="width: 350px;">
+                            <span class="input-group-text bg-light border-0"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control bg-light border-0" placeholder="Search or type"
+                                id="Search_text">
+                            <button class="btn btn-primary border-1" id="Search_btn">Search</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="dropdown mt-3">
+                    <select id="item-status" name="item-status" class="btn dropdown-toggle  bg-white"
+                        onchange="readData();">
+                        <option class="dropdown-item" value="all">All</option>
+                        <option class="dropdown-item" value="Available">Available</option>
+                        <option class="dropdown-item" value="Disabled">Disabled</option>
+                        <option class="dropdown-item" value="Borrowing">Borrowing</option>
+                        <option class="dropdown-item" value="Pending">Pending</option>
+                        <option class="dropdown-item" value="RePending">RePending</option>
+                    </select>
+                </div>
+
+                <!-- <p>Selected Value: <span id="selectedValue"></span></p> -->
+                <!-- table tiem -->
+
+                <div>
+                    <div class="text-primary p-3">
+                        <h1>History</h1>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Asset ID</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">AssetName</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Borrow Date</th>
+                                <th scope="col">Return Date</th>
+                                <th scope="col">Available By</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="table-body"></tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+
+        //========================= Search Onclick =====================
+        let search_t = '';
+        document.querySelector('#Search_btn').onclick = function () {
+            search_t = document.querySelector('#Search_text').value;
+            readData();
+        }
+
+        async function readData() {
+            try {
+                const response = await fetch('/history');
+                if (response.ok) {
+                    const data = await response.json();
+                    var dropdown = document.getElementById("item-status");
+                    var selectedValue = dropdown.options[dropdown.selectedIndex].value;
+                    var selectedStatus = selectedValue;
+                    let product_d = '';
+                    // console.log(search_t);
+
+                    for (p of data) {
+
+                        if (search_t === p.Borrowname) {
+
+                            if (selectedStatus === "all") {
+                                if (p.Assetstatus == "Available") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                else if (p.Assetstatus == "Disabled") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                else if (p.Assetstatus == "Borrowing") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                else if (p.Assetstatus == "RePending") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                else if (p.Assetstatus == "Pending") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+
+                                document.querySelector('#table-body').innerHTML = product_d;
+                            }
+
+                            if (selectedStatus === "Available") {
+                                if (p.Assetstatus == "Available") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                document.querySelector('#table-body').innerHTML = product_d;
+                            }
+
+                            if (selectedStatus === "Disabled") {
+                                if (p.Assetstatus == "Disabled") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                document.querySelector('#table-body').innerHTML = product_d;
+                            }
+
+                            if (selectedStatus === "Borrowing") {
+                                if (p.Assetstatus == "Borrowing") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                document.querySelector('#table-body').innerHTML = product_d;
+                            }
+
+                            if (selectedStatus === "Pending") {
+                                if (p.Assetstatus == "Pending") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                document.querySelector('#table-body').innerHTML = product_d;
+                            }
+
+                            if (selectedStatus === "RePending") {
+                                if (p.Assetstatus == "RePending") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                document.querySelector('#table-body').innerHTML = product_d;
+                            }
+                        }
+                        else if (search_t === '') {
+                            if (selectedStatus === "all") {
+                                if (p.Assetstatus == "Available") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                else if (p.Assetstatus == "Disabled") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+
+                                else if (p.Assetstatus == "Borrowing") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+
+                                else if (p.Assetstatus == "Pending") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                else if (p.Assetstatus == "RePending") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                document.querySelector('#table-body').innerHTML = product_d;
+                            }
+
+                            if (selectedStatus === "Available") {
+                                if (p.Assetstatus == "Available") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                document.querySelector('#table-body').innerHTML = product_d;
+                            }
+
+                            if (selectedStatus === "Disabled") {
+                                if (p.Assetstatus  == "Disabled") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                document.querySelector('#table-body').innerHTML = product_d;
+                            }
+
+                            if (selectedStatus === "Borrowing") {
+                                if (p.Assetstatus == "Borrowing") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                document.querySelector('#table-body').innerHTML = product_d;
+                            }
+
+                            if (selectedStatus === "Pending") {
+                                if (p.Assetstatus == "Pending") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                document.querySelector('#table-body').innerHTML = product_d;
+                            }
+                            if (selectedStatus === "RePending") {
+                                if (p.Assetstatus == "RePending") {
+                                    product_d += `<tr><th scope="row">${p.Assetid}</th>
+                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td>${p.Assetname}</td>
+                                    <td>${p.Assetstatus}</td>
+           
+                                    <td>${p.Borrowdate || 'N/A'}</td>
+                                    <td>${p.ReturnDate || 'N/A'}</td>
+                                    <td>${p.lectname || 'N/A'}</td>
+                                    </tr>`;
+                                }
+                                document.querySelector('#table-body').innerHTML = product_d;
+                            }
+                        }
+                    }
+                } else if (response.status == 500) {
+                    const data = response.text();
+                    throw Error(data);
+                }
+            } catch (err) {
+                console.error(err.message);
+                Notiflix.Report.failure('Error', err.message, 'Close');
+            }
+
+            // showData();
+        }
+
+        //====================== Show data =========================\
+
+        readData();
+    </script>
+
+</body>
+
+</html>
