@@ -84,8 +84,9 @@
                         <div class="input-group" style="width: 350px;">
                             <span class="input-group-text bg-light border-0"><i class="fas fa-search"></i></span>
                             <input type="text" class="form-control bg-light border-0" placeholder="Search or type"
-                                id="search-input">
-                            <button class="btn btn-primary" id="search-button">Search</button>
+                                id="searchInput">
+                            <button class="btn btn-primary" id="search-button"onclick="searchAssets()">Search</button>
+                             <button class="btn btn-success" onclick="addAsset()">Add</button>
                         </div>
 
                     </div>
@@ -107,10 +108,303 @@
     </div>
 
 
-   
+      <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>NameAsset</th>
+                <th>StaffID</th>
+                <th>Status</th>
+                <th>Edit</th>
+                <th>delete</th>
+            </tr>
+        </thead>
+        <tbody id="tblAsset">
+        </tbody>
+    </table>
+
+    <!-- Add/Edit Modal -->
+    <div class="modal" id="assetModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Add/Edit product</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <!-- Inside the form in the modal-body -->
+                    <form id="formAsset">
+                        <label class="form-label">Name</label>
+                        <input type="text" name="Assetname" class="form-control mb-2" placeholder="Asset Name">
+                        <select name="img" id="">
+                            <option value="hat">hat</option>
+                            <option value="jeans">jeans</option>
+                            <option value="shirt">shirt</option>
+                            <option value="shoe">shoe</option>
+                            <option value="cat">cat</option>
+                            <option value="catt">catt</option>
+                            <option value="dog">dog</option>
+                            <option value="dog2">dogg</option>
+                        </select>
+                        
+                        <!-- Assuming Staffaddid is managed here -->
+                        <p><h3><span class="d-none d-sm-inline mx-1" id="displayUsername" style="color:#5F6165;">StaffName</span>
+                        </p><h3>
+                            <p><h3><span class="d-none d-sm-inline mx-1" id="displayUserid" style="color:#5F6165;">StaffName</span>
+                            </p><h3>
+                        <!-- ... Other form elements remain unchanged ... -->
+                        <button type="submit" class="btn btn-primary">OK</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
 
    
+    <script>
+        // add or edit methods
+        var action = 'add';
+        // edit product ID
+        var editID = 0;
+        // get all products
 
+        // add modal
+        const assetModal = new bootstrap.Modal(document.querySelector('#assetModal'));
+
+        function displayAssets(data) {
+    let rows = '';
+    data.forEach(asset => {
+        rows += `<tr><td>${asset.Assetid}</td>`;
+        if (asset.Assetimg == "") {
+            rows += `<td><img class="asset-image" src="/public/assets/" alt="Asset Image"/></td>`;
+        } else {
+            rows += `<td><img class="card-img-top asset-image" src="/public/assets/${asset.Assetimg}" alt="product"></td>`;
+        }
+      
+
+        rows += `<td>${asset.Assetname}</td>`;
+        rows += `<td>${asset.Staffaddid}</td>`;
+        rows += `<td>${asset.Assetstatus}</td>`;
+        rows += `<td><button class="btn btn-warning" onclick=editAsset(${JSON.stringify(asset)})>Edit</button></td>`;
+        rows += `<td><button class="btn btn-danger" onclick=deleteAsset(${asset.Assetid})>Delete</button></td>`;
+        if (asset.Assetstatus === 'Available') {
+            rows += `<td><button class="btn btn-outline-danger" onclick="toggleAssetStatus(${asset.Assetid}, 'Disabled')">Disable</button></td>`;
+        } else if (asset.Assetstatus === 'Disabled') {
+            rows += `<td><button class="btn btn-outline-info" onclick="toggleAssetStatus(${asset.Assetid}, 'Available')">Enable</button></td>`;
+        }
+
+        rows += `</tr>`;
+    });
+    document.querySelector("#tblAsset").innerHTML = rows;
+}
+function toggleAssetStatus(assetId, newStatus) {
+    fetch(`/assets/toggle-status/${assetId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newStatus: newStatus })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+        getAssets(); // Refresh the asset list
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function getAssets() {
+    fetch('/assets')
+        .then(response => response.json())
+        .then(data => {
+            displayAssets(data);
+        })
+        .catch(err => console.error(err));
+}
+
+
+        function deleteAsset(id) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Warning',
+                text: "Sure to delete this asset?",
+                showCancelButton: true,
+                confirmButtonText: 'Yes'
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    fetch(`/assets/${id}`, { method: 'DELETE' })
+                        .then(function (response) {
+                            if (response.ok) {
+                                getAssets();
+                            }
+                        })
+                        .catch(function (err) {
+                            console.error(err);
+                            alert(err);
+                        });
+                }
+            });
+        }
+        const formAsset = document.getElementById('formAsset');
+        formAsset.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(formAsset);
+    const imgValue = formData.get('img');
+    let result;
+
+    // Get values from local storage
+    const userid = localStorage.getItem('userid');
+    const username = localStorage.getItem('username');
+    
+    // Check if username and userid exist
+    if (!username || !userid) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Staff information is missing.'
+        });
+        return; // Stop the function if no user info is found
+    }
+
+  
+    switch (imgValue) {
+        case "hat":
+            result = "hat.png";
+            break;
+        case "jeans":
+            result = "jeans.png";
+            break;
+        case "shirt":
+            result = "shirt.png";
+            break;
+        case "shoe":
+            result = "shoe.png";
+            break;
+            case "cat":
+            result = "cat.gif";
+            break;
+        case "catt":
+            result = "catt.gif";
+            break;
+            case "dog":
+            result = "dog.gif";
+            break;
+            case "dog2":
+            result = "dog.png";
+            break;
+        default:
+            result = "";
+    }
+   
+    const asset = {
+        
+        Assetname: formData.get('Assetname'),   
+        
+        Assetimg: result,
+        Assetstatus: "Available",
+        Staffaddid:username,
+        Staffaddid:userid, 
+    };
+
+    let url = '/assets';
+    let httpMethod = (action === 'edit') ? 'PUT' : 'POST';
+    if (action === 'edit') {
+        url += `/${editID}`;
+    }
+
+    try {
+        const response = await fetch(url, {
+            method: httpMethod,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(asset)
+        });
+
+        if (!response.ok) throw new Error('Bad response from the server.');
+
+        const data = await response.json(); // Consider getting a response from the server to confirm the operation
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Asset saved successfully'
+        });
+
+        getAssets(); // Refresh the list of assets
+    } catch (err) {
+        console.error(err);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: err.toString()
+        });
+    } finally {
+        assetModal.hide(); // Hide the modal whether there was an error or not
+    }
+    // ... rest of your fetch call ...
+});
+
+
+
+
+        function addAsset() {
+            action = 'add';
+            formAsset.reset();
+            document.querySelector('h4.modal-title').innerText = 'Add new asset';
+            assetModal.show();
+        }
+
+        function editAsset(asset) {
+    action = 'edit';
+    editID = asset.Assetid;
+
+    document.querySelector('h4.modal-title').innerText = 'Edit asset';
+    document.querySelector('input[name="Assetname"]').value = asset.Assetname;
+    
+    // Set the value for the select field
+    document.querySelector('select[name="img"]').value = asset.Assetimg.split('.')[0];
+    
+    // If Assetstatus was an input field:
+    // document.querySelector('input[name="Assetstatus"]').value = asset.Assetstatus;
+    
+    
+
+    assetModal.show();
+}
+
+function searchAssets() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    fetch('/assets')
+        .then(response => response.json())
+        .then(data => {
+            const filteredAssets = data.filter(asset => asset.Assetname.toLowerCase().includes(searchTerm));
+            displayAssets(filteredAssets);
+        })
+        .catch(err => console.error(err));
+}
+
+
+getAssets();
+
+window.onload = function () {
+
+
+    const userid = localStorage.getItem('userid');
+const username = localStorage.getItem('username');
+if (username) {
+document.getElementById('displayUsername').textContent = 'Staff Name: '+username;
+document.getElementById('displayUserid').textContent = 'Staff ID: '+userid;
+} else {
+
+document.getElementById('displayUsername').textContent = 'Guest';
+document.getElementById('displayUserid').textContent = 'ID';
+}}
+    </script>
 </body>
 
 </html>

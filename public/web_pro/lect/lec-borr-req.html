@@ -270,12 +270,12 @@
                     })
                         .then(response => response.json())
                         .then(data => {
-                            button.closest('tr').querySelector('td:last-child').textContent = 'Disapproved';
-                            Notiflix.Notify.error('Dis Approved!');
+                            button.closest('tr').querySelector('td:last-child').textContent = 'Reject';
+                            Notiflix.Notify.error('Reject!');
                         })
                         .catch(error => {
 
-                            Notiflix.Notify.error('Dis Approved!');
+                            Notiflix.Notify.error('Reject!');
                         });
                 }
             });

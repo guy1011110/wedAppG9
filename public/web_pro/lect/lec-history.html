@@ -16,7 +16,22 @@
     <script src="/public/js/notiflix-aio-3.2.6.min.js"></script>
     <title>lec_history</title>
 </head>
+<style>
+     .asset-image {
+      width: 100px;  
+              height: auto; 
+    }
+    .table-container {
+    max-height: 400px; /* Adjust this value as needed */
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
 
+.table {
+    width: 100%;
+    margin-bottom: 0; /* Remove bottom margin */
+}
+</style>
 <body>
 
     <div class="container-fluid">
@@ -32,65 +47,48 @@
                         id="menu">
 
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle ">
+                            <a href="/lecturer" class="nav-link px-0 align-middle ">
                                 <i class="fas fa-tachometer-alt me-2" style="color:#5F6165;"></i>
                                 <!-- Dashboard Icon -->
-                                <span class="ms-1 d-none d-sm-inline " id="dashboard"
+                                <span class="ms-1 d-none d-sm-inline "
                                     style="color:#5F6165;border-bottom: 2px solid;">Dashboard</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle">
+                            <a href="/lecturer/browse-asset-list" class="nav-link px-0 align-middle">
                                 <i class="fas fa-box me-2" style="color:#5F6165;"></i> <!-- Asset Icon -->
-                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Asset</span>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Browse asset list</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle">
+                            <a href="/lecturer/Borrowing-requests" class="nav-link px-0 align-middle">
                                 <i class="fas fa-check-circle me-2" style="color:#5F6165;"></i>
-                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Asset Accept</span>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Borrowing-requests</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="far fa-calendar me-2" style="color:#5F6165;"></i> <!-- Calendar Icon -->
-                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Calendar</span>
+                            <a href="/lecturer/history" class="nav-link px-0 align-middle">
+                                <i class="fas fa-check-circle me-2" style="color:#5F6165;"></i>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">History</span>
                             </a>
                         </li>
-
-                        <li>
-                            <a href="#" class="nav-link px-0 align-middle" id="Borrowing_requests">
-                                <i class="fa-solid fa-list me-2" style="color:#5F6165;"></i>
-                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Borrowing requests</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#" class="nav-link px-0 align-middle" id="Approve_or_disapprove">
-                                <i class="fa-solid fa-circle-check me-2" style="color:#5F6165;"></i>
-                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Approve or
-                                    disapprove</span>
-                            </a>
-                        </li>
-                    </ul>
+                        
                     </ul>
 
                     <hr>
                     <div class="dropdown pb-5">
-                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                        <a href="" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                             id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="https://github.com/mdo.png" alt="avatar" width="30" height="30"
                                 class="rounded-circle">
-                            <span class="d-none d-sm-inline mx-1" id="displayUsername"
-                                style="color:#5F6165;">Userrrrr</span>
+                            <span id="fullName" class="d-none d-sm-inline p-2" style="color:#000000;"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
+                            <li><a class="dropdown-item" href="/settings/lec"><i class="fas fa-cog me-2"></i>Settings</a>
                             </li>
-                            <li><a class a="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a>
+                            <li><a class="dropdown-item" id="logout-link" href="/logout"><i
+                                        class="fas fa-sign-out-alt me-2"></i>Sign
+                                    out</a>
                             </li>
                         </ul>
                     </div>
@@ -178,7 +176,7 @@
                             if (selectedStatus === "all") {
                                 if (p.Assetstatus == "Available") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -189,7 +187,7 @@
                                 }
                                 else if (p.Assetstatus == "Disabled") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -200,7 +198,7 @@
                                 }
                                 else if (p.Assetstatus == "Borrowing") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -211,7 +209,7 @@
                                 }
                                 else if (p.Assetstatus == "RePending") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -222,7 +220,7 @@
                                 }
                                 else if (p.Assetstatus == "Pending") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -238,7 +236,7 @@
                             if (selectedStatus === "Available") {
                                 if (p.Assetstatus == "Available") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -253,7 +251,7 @@
                             if (selectedStatus === "Disabled") {
                                 if (p.Assetstatus == "Disabled") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -268,7 +266,7 @@
                             if (selectedStatus === "Borrowing") {
                                 if (p.Assetstatus == "Borrowing") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -283,7 +281,7 @@
                             if (selectedStatus === "Pending") {
                                 if (p.Assetstatus == "Pending") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -298,7 +296,7 @@
                             if (selectedStatus === "RePending") {
                                 if (p.Assetstatus == "RePending") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -314,7 +312,7 @@
                             if (selectedStatus === "all") {
                                 if (p.Assetstatus == "Available") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -325,7 +323,7 @@
                                 }
                                 else if (p.Assetstatus == "Disabled") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -337,7 +335,7 @@
 
                                 else if (p.Assetstatus == "Borrowing") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -349,7 +347,7 @@
 
                                 else if (p.Assetstatus == "Pending") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -360,7 +358,7 @@
                                 }
                                 else if (p.Assetstatus == "RePending") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -375,7 +373,7 @@
                             if (selectedStatus === "Available") {
                                 if (p.Assetstatus == "Available") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -390,7 +388,7 @@
                             if (selectedStatus === "Disabled") {
                                 if (p.Assetstatus  == "Disabled") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -405,7 +403,7 @@
                             if (selectedStatus === "Borrowing") {
                                 if (p.Assetstatus == "Borrowing") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -420,7 +418,7 @@
                             if (selectedStatus === "Pending") {
                                 if (p.Assetstatus == "Pending") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            
@@ -434,7 +432,7 @@
                             if (selectedStatus === "RePending") {
                                 if (p.Assetstatus == "RePending") {
                                     product_d += `<tr><th scope="row">${p.Assetid}</th>
-                                    <td><img src="/public/img/bg/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
+                                    <td><img src="/public/assets/${p.Assetimg}" class="asset-image" alt="${p.Assetname}"></td>
                                     <td>${p.Assetname}</td>
                                     <td>${p.Assetstatus}</td>
            

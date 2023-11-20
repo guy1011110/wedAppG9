@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/css/bootstrap.min.css">
     <script src="/public/js/bootstrap.bundle.min.js"></script>
-    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Optional: jQuery for Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"><!-- Icon -->
     <!-- Icon -->
@@ -63,21 +67,15 @@
                         </li>
                     </ul>
                     <hr>
-                    <div class="dropdown pb-5">
-                        <a href="" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                            id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://github.com/mdo.png" alt="avatar" width="30" height="30"
-                                class="rounded-circle">
-                            <span id="fullName" class="d-none d-sm-inline p-2" style="color:#000000;"></span>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle text-white text-decoration-none" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="https://github.com/mdo.png" alt="avatar" width="30" height="30" class="rounded-circle">
+                            <span id="displayUsername" class="d-none d-sm-inline p-2" style="color:#000000;">Username</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                            <li><a class="dropdown-item" href="/settings"><i class="fas fa-cog me-2"></i>Settings</a>
-                            </li>
-                            <li><a class="dropdown-item" id="logout-link" href="/logout"><i
-                                        class="fas fa-sign-out-alt me-2"></i>Sign
-                                    out</a>
-                            </li>
-                        </ul>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="/settings/std">Settings</a>
+                            <a class="dropdown-item" id="logout-link" href="/logout">Sign out</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -92,6 +90,7 @@
                         </div>
                     </div>
                 </div>
+                <div>
                 <div class="text-primary p-3">
                     <h1>Asset</h1>
                 </div>
@@ -99,7 +98,7 @@
 
                 </div>
 
-
+            </div>
 
             </div>
         </div>

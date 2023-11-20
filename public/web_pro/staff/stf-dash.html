@@ -52,13 +52,21 @@
         margin-bottom: 5px;
     }
 
-    .radar-chart {
+    .polar-chart {
         max-width: 60px;
-        /* Set a maximum width for the radar chart */
+       
         max-height: 40px;
-        /* Set a maximum height for the radar chart */
+      
         margin: 10px;
-        /* Center the canvas element */
+    
+    }
+    .donut-chart {
+        max-width: 60px;
+       
+        max-height: 40px;
+      
+        margin: 10px;
+    
     }
 
     .calendar-dates {
@@ -75,7 +83,7 @@
     }
 
     .current-date {
-        background-color: #dff5b4;
+        background-color: rgba(141, 252, 107, 0.415);
         color: bl;
         border-radius: 50%;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -161,7 +169,7 @@
                 <div class="">
                     <div class="row bg-white border border-gray p-3 rounded mx-auto mt-3">
 
-                        <div class="col-md-4 stretch-card grid-margin ">
+                        <div class="col-md-3 stretch-card grid-margin">
                             <div class="card  card-img-holder text-white">
                                 <div class="card-body text-black  rounded"
                                     style="background-color: rgba(54, 162, 235, 0.5);">
@@ -169,35 +177,49 @@
                                     <h4 class="font-weight-normal mb-3">Avaliable <i
                                             class="mdi mdi-chart-line mdi-24px float-right"></i>
                                     </h4>
-                                    <h2 class="mb-5">2</h2>
-                                    <h6 class="card-text">20%</h6>
+                                    <h2 class="mb-5" id="available-count">0</h2>
+                                    <h6 class="card-text" id="available-countt">0%</h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 stretch-card grid-margin">
-                            <div class="card bg-gradient-danger card-img-holder text-white">
-                                <div class="card-body text-black  rounded"
-                                    style="background-color: rgba(255, 206, 86, 0.5)">
-                                    <h4 class="font-weight-normal mb-3">Borrowing<i
-                                            class="mdi mdi-chart-line mdi-24px float-right"></i>
-                                    </h4>
-                                    <h2 class="mb-5">5</h2>
-                                    <h6 class="card-text">50%</h6>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 stretch-card grid-margin">
+                  
+                        <div class="col-md-3 stretch-card grid-margin">
                             <div class="card bg-gradient-danger card-img-holder text-white">
                                 <div class="card-body text-black  rounded"
                                     style="background-color: rgba(255, 99, 132, 0.5)">
                                     <h4 class="font-weight-normal mb-3">Disabled<i
                                             class="mdi mdi-chart-line mdi-24px float-right"></i>
                                     </h4>
-                                    <h2 class="mb-5">3</h2>
-                                    <h6 class="card-text">30%</h6>
+                                    <h2 class="mb-5" id="disabled-count">0</h2> 
+                                    <h6 class="card-text" id="disabled-countt">0%</h6>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-3 stretch-card grid-margin">
+                            <div class="card bg-gradient-danger card-img-holder text-white">
+                                <div class="card-body text-black  rounded"
+                                    style="background-color: rgba(255, 206, 86, 0.5)">
+                                    <h4 class="font-weight-normal mb-3">Borrowing<i
+                                            class="mdi mdi-chart-line mdi-24px float-right"></i>
+                                    </h4>
+                                    <h2 class="mb-5" id="borrowing-count">0</h2>
+                                    <h6 class="card-text" id="borrowing-countt">0%</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 stretch-card grid-margin">
+                            <div class="card bg-gradient-danger card-img-holder text-white">
+                                <div class="card-body text-black  rounded"
+                                    style="background-color: rgba(255, 119, 0, 0.5)">
+                                    <h4 class="font-weight-normal mb-3">Pending<i
+                                            class="mdi mdi-chart-line mdi-24px float-right"></i>
+                                    </h4>
+                                    <h2 class="mb-5" id="pending-count">0</h2>
+                                    <h6 class="card-text" id="pending-countt">0%</h6>
+                                </div>
+                            </div>
+                        </div>
+                        
 
 
 
@@ -214,7 +236,7 @@
 
                 <div class="row mx-auto">
                     <div class="col-md-4 bg-white border border-gray p-4 rounded">
-                        <!-- Calendar structure -->
+                        <div class="small">Calendar</div>
                         <div class="calendar rounded">
                             <div class="calendar-header">
                                 <button id="prev-month">&lt;</button>
@@ -236,11 +258,12 @@
                         </div>
                     </div>
                     <div class="col bg-white border border-gray p-4 rounded">
-                        <div class="row ">
-                            <canvas id="radarChart" width="400" height="400"></canvas>
-                        </div>
+                        <div class="small">Borrower Status</div>
+                            <canvas id="myPolarChart"></canvas>
+                        
                     </div>
                     <div class="col bg-white border border-gray p-4 rounded">
+                        <div class="small">Asset Status</div>
                         <canvas id="doughnutChart" style="height: 300px; width: 100%;"></canvas>
                     </div>
 
@@ -306,99 +329,99 @@
             // Initial call to populate the calendar
             updateCalendar();
         });
-        document.addEventListener("DOMContentLoaded", function () {
-            // Your existing calendar code here
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     // Your existing calendar code here
 
-            // Initialize the doughnut chart
-            var ctx = document.getElementById('doughnutChart').getContext('2d');
-            var doughnutChart = new Chart(ctx, {
+        //     // Initialize the doughnut chart
+        //     var ctx = document.getElementById('doughnutChart').getContext('2d');
+        //     var doughnutChart = new Chart(ctx, {
 
-                type: 'doughnut',
-                data: {
-                    datasets: [{
-                        data: [20, 50, 30],
-                        backgroundColor: [
-                            "rgba(54, 162, 235, 0.5)", // Blue with transparency
-                            "rgba(255, 206, 86, 0.5)",  // Yellow with transparency
-                            "rgba(255, 99, 132, 0.5)", // Pink with transparency
-
-
-                        ],
-                        borderColor: [
-                            "rgba(54, 162, 235, 1)", // Solid blue
-                            "rgba(255, 206, 86, 1)",  // Solid yellow
-                            "rgba(255, 99, 132, 1)", // Solid pink
+        //         type: 'doughnut',
+        //         data: {
+        //             datasets: [{
+        //                 data: [20, 50, 30],
+        //                 backgroundColor: [
+        //                     "rgba(54, 162, 235, 0.5)", // Blue with transparency
+        //                     "rgba(255, 206, 86, 0.5)",  // Yellow with transparency
+        //                     "rgba(255, 99, 132, 0.5)", // Pink with transparency
 
 
-                        ],
-                        borderWidth: 0.5 // Slight border for a frosted effect
-                    }],
-                    labels: ['Available', 'Borrowing', 'Disabled']
-                },
-                options: {
-                    responsive: true,
-                    legend: {
-                        position: 'bottom'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Asset Borrowing Status', // Make sure this title is what you want
-                        fontSize: 10 // Adjust the font size so it's clearly visible
-                    },
-                    animation: {
-                        animateScale: true,
-                        animateRotate: true
-                    }
-                }
-            });
-        });
-        var ctxR = document.getElementById("radarChart").getContext('2d');
-        var myRadarChart = new Chart(ctxR, {
-            type: 'radar',
-            data: {
-                labels: ["Available", "Disabled", "Borrower", "Pending", "RePending", "Approve", "DisApprove"],
-                datasets: [
+        //                 ],
+        //                 borderColor: [
+        //                     "rgba(54, 162, 235, 1)", // Solid blue
+        //                     "rgba(255, 206, 86, 1)",  // Solid yellow
+        //                     "rgba(255, 99, 132, 1)", // Solid pink
 
-                    {
 
-                        label: " Status All Asset ",
-                        backgroundColor: "rgba(90, 173, 246, 0.5)",
-                        borderColor: "rgba(90, 173, 246, 1)",
-                        pointBackgroundColor: "rgba(90, 173, 246, 1)",
-                        pointBorderColor: "#fff",
-                        pointHoverBackgroundColor: "#fff",
-                        pointHoverBorderColor: "rgba(90, 173, 246, 1)",
-                        data: [10, 6, 8, 10, 12, 0, 0]
-                    },
-                    {
-                        label: "Status All BrrowerReqest",
-                        backgroundColor: "rgba(245, 74, 85, 0.5)",
-                        borderColor: "rgba(245, 74, 85, 1)",
-                        pointBackgroundColor: "rgba(245, 74, 85, 1)",
-                        pointBorderColor: "#fff",
-                        pointHoverBackgroundColor: "#fff",
-                        pointHoverBorderColor: "rgba(245, 74, 85, 1)",
-                        data: [0, 0, 0, 12, 10, 10, 13]
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Status All Asset',
-                    fontSize: 10
-                },
-                scale: {
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+        //                 ],
+        //                 borderWidth: 0.5 // Slight border for a frosted effect
+        //             }],
+        //             labels: ['Available', 'Borrowing', 'Disabled']
+        //         },
+        //         options: {
+        //             responsive: true,
+        //             legend: {
+        //                 position: 'bottom'
+        //             },
+        //             title: {
+        //                 display: true,
+        //                 text: 'Asset Borrowing Status', // Make sure this title is what you want
+        //                 fontSize: 10 // Adjust the font size so it's clearly visible
+        //             },
+        //             animation: {
+        //                 animateScale: true,
+        //                 animateRotate: true
+        //             }
+        //         }
+        //     });
+        // });
+        // var ctxR = document.getElementById("radarChart").getContext('2d');
+        // var myRadarChart = new Chart(ctxR, {
+        //     type: 'radar',
+        //     data: {
+        //         labels: ["Available", "Disabled", "Borrower", "Pending","Pending", "RePending", "Approve", "DisApprove" , "reject","return"],
+        //         datasets: [
+
+        //             {
+
+        //                 label: " Status All Asset ",
+        //                 backgroundColor: "rgba(90, 173, 246, 0.5)",
+        //                 borderColor: "rgba(90, 173, 246, 1)",
+        //                 pointBackgroundColor: "rgba(90, 173, 246, 1)",
+        //                 pointBorderColor: "#fff",
+        //                 pointHoverBackgroundColor: "#fff",
+        //                 pointHoverBorderColor: "rgba(90, 173, 246, 1)",
+        //                 data: [10, 6, 8, 10, 12, 0, 0]
+        //             },
+        //             {
+        //                 label: "Status All BrrowerReqest",
+        //                 backgroundColor: "rgba(245, 74, 85, 0.5)",
+        //                 borderColor: "rgba(245, 74, 85, 1)",
+        //                 pointBackgroundColor: "rgba(245, 74, 85, 1)",
+        //                 pointBorderColor: "#fff",
+        //                 pointHoverBackgroundColor: "#fff",
+        //                 pointHoverBorderColor: "rgba(245, 74, 85, 1)",
+        //                 data: [0, 0, 0, 12, 10, 10, 13]
+        //             }
+        //         ]
+        //     },
+        //     options: {
+        //         responsive: true,
+        //         legend: {
+        //             position: 'top',
+        //         },
+        //         title: {
+        //             display: true,
+        //             text: 'Status All Asset',
+        //             fontSize: 10
+        //         },
+        //         scale: {
+        //             ticks: {
+        //                 beginAtZero: true
+        //             }
+        //         }
+        //     }
+        // });
         document.addEventListener('DOMContentLoaded', function () {
             // Fetch the user's full name and update the UI
             fetch("/user")
@@ -430,6 +453,124 @@
                 history.replaceState(null, '', '/');
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+    fetch('/assets/count')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('available-count').textContent = data.available;
+            document.getElementById('borrowing-count').textContent = data.borrowing;
+            document.getElementById('disabled-count').textContent = data.disabled;
+            document.getElementById('pending-count').textContent = data.pending;
+
+            const available = data.available;
+            const borrowing = data.borrowing;
+            const disabled = data.disabled;
+            const pending = data.pending;
+
+            const total = available + borrowing + disabled + pending;
+
+            const availablePercent = ((available / total) * 100).toFixed(2);
+            const borrowingPercent = ((borrowing / total) * 100).toFixed(2);
+            const disabledPercent = ((disabled / total) * 100).toFixed(2);
+            const pendingPercent = ((pending / total) * 100).toFixed(2);
+
+            document.getElementById('available-countt').textContent = `(${availablePercent}%)`;
+            document.getElementById('borrowing-countt').textContent = `(${borrowingPercent}%)`;
+            document.getElementById('disabled-countt').textContent = `(${disabledPercent}%)`;
+            document.getElementById('pending-countt').textContent = `(${pendingPercent}%)`;
+            var ctx = document.getElementById('doughnutChart').getContext('2d');
+            var doughnutChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [availablePercent, borrowingPercent, disabledPercent,pendingPercent],
+                        backgroundColor: [
+                            "rgba(54, 162, 235, 0.5)",
+                            "rgba(255, 206, 86, 0.5)",
+                            "rgba(255, 99, 132, 0.5)",
+                            "rgba(255, 119, 0, 0.5)"
+                        ],
+                        borderColor: [
+                            "rgba(54, 162, 235, 1)",
+                            "rgba(255, 206, 86, 1)",
+                            "rgba(255, 99, 132, 1)",
+                            "rgba(255, 119, 0, 1)"
+                        ],
+                        borderWidth: 0.5
+                    }],
+                    labels: ['Available', 'Borrowing', 'Disabled','pending']
+                },
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Asset Borrowing Status',
+                        fontSize: 10
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            });
+
+        })
+        .catch(error => console.error('Error:', error));
+});
+document.addEventListener('DOMContentLoaded', function() {
+            fetch('/borrow-requests-summary')
+                .then(response => response.json())
+                .then(data => {
+                    var ctx = document.getElementById('myPolarChart').getContext('2d');
+                    var myPolarChart = new Chart(ctx, {
+                        type: 'polarArea',
+                        data: {
+                            labels: ['Pending', 'RePending', 'Approved' , 'Reject', 'Returned'],
+                            datasets: [{
+                                label: 'Borrow Requests Status',
+                                data: [data.pending, data.repending, data.approve, data.reject, data.return],
+                                backgroundColor: [
+                                    
+                                'rgba(255, 180, 0, 0.5)',  
+                                    'rgba(255, 205, 86, 0.5)',
+                                   
+                                    
+                                    'rgba(54, 162, 235, 0.5)',
+                                    
+                                    'rgba(255, 99, 132, 0.5)',
+                                    'rgba(153, 102, 255, 0.5)',
+                                    
+                                ]
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                r: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+        window.onload = function () {
+
+
+const userid = localStorage.getItem('userid');
+const username = localStorage.getItem('username');
+if (username) {
+document.getElementById('displayUsername').textContent = 'Staff Name: '+username;
+document.getElementById('displayUserid').textContent = 'Staff ID: '+userid;
+} else {
+
+document.getElementById('displayUsername').textContent = 'Guest';
+document.getElementById('displayUserid').textContent = 'ID';
+}}
     </script>
     <script src="/public/js/bootstrap.min.js"></script>
     <script src="calendar.js"></script>

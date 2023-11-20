@@ -8,6 +8,10 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="/public/css/bootstrap.min.css">
     <script src="/public/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Icon -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Welcome</title>
@@ -20,71 +24,166 @@
 </head>
 
 <body class="p-3">
-    <h1>Add Edit Delete</h1>
-    <div class="d-flex justify-content-between mb-3">
-        <input type="text" id="searchInput" placeholder="Search by Asset Name" class="form-control ">
-        <button class="btn btn-info" onclick="searchAssets()">Search</button>
-        <button class="btn btn-success" onclick="addAsset()">Add</button>
-    </div>
-    
-    
-    
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Image</th>
-                <th>NameAsset</th>
-                <th>StaffID</th>
-                <th>Status</th>
-                <th>Edit</th>
-                <th>delete</th>
-            </tr>
-        </thead>
-        <tbody id="tblAsset">
-        </tbody>
-    </table>
 
-    <!-- Add/Edit Modal -->
-    <div class="modal" id="assetModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Add/Edit product</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 pt-3">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/"
+                        class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <i class="fas fa-home me-2" style="color: #11D553; font-size: 1.5rem;"></i>
+                        <span class="fs-5 d-none d-sm-inline" style="color: #11D553;">Asset borrowing</span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+                        id="menu">
+
+                        <li>
+                            <a href="/staff" class="nav-link px-0 align-middle ">
+                                <i class="fas fa-tachometer-alt me-2" style="color:#5F6165;"></i>
+                                <!-- Dashboard Icon -->
+                                <span class="ms-1 d-none d-sm-inline "
+                                    style="color:#5F6165;">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/staff/Edit-Asset" class="nav-link px-0 align-middle">
+                                <i class="fas fa-box me-2" style="color:#5F6165;"></i> <!-- Asset Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;border-bottom: 2px solid;">Edit Asset</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/staff/History" class="nav-link px-0 align-middle">
+                                <i class="fas fa-check-circle me-2" style="color:#5F6165;"></i>
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">History</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/staff/Returning" class="nav-link px-0 align-middle">
+                                <i class="far fa-calendar me-2" style="color:#5F6165;"></i> <!-- Calendar Icon -->
+                                <span class="ms-1 d-none d-sm-inline" style="color:#5F6165;">Returning</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <hr>
+                    <div class="dropdown pb-5">
+                        <a href="" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                            id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://github.com/mdo.png" alt="avatar" width="30" height="30"
+                                class="rounded-circle">
+                            <span id="fullName" class="d-none d-sm-inline p-2" style="color:#000000;"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="/settings/stf"><i class="fas fa-cog me-2"></i>Settings</a>
+                            </li>
+                            <li><a class="dropdown-item" id="logout-link" href="/logout"><i
+                                        class="fas fa-sign-out-alt me-2"></i>Sign
+                                    out</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <!-- Inside the form in the modal-body -->
-                    <form id="formAsset">
-                        <label class="form-label">Name</label>
-                        <input type="text" name="Assetname" class="form-control mb-2" placeholder="Asset Name">
-                        <select name="img" id="">
-                            <option value="hat">hat</option>
-                            <option value="jeans">jeans</option>
-                            <option value="shirt">shirt</option>
-                            <option value="shoe">shoe</option>
-                            <option value="cat">cat</option>
-                            <option value="catt">catt</option>
-                            <option value="dog">dog</option>
-                            <option value="dog2">dogg</option>
-                        </select>
-                        
-                        <!-- Assuming Staffaddid is managed here -->
-                        <p><h3><span class="d-none d-sm-inline mx-1" id="displayUsername" style="color:#5F6165;">StaffName</span>
-                        </p><h3>
-                            <p><h3><span class="d-none d-sm-inline mx-1" id="displayUserid" style="color:#5F6165;">StaffName</span>
-                            </p><h3>
-                        <!-- ... Other form elements remain unchanged ... -->
-                        <button type="submit" class="btn btn-primary">OK</button>
-                    </form>
+            </div>
+
+            <div class="col bg-light">
+                <div class="row bg-white py-2">
+                    <div class="col">
+                        <div class="input-group" style="width: 350px;">
+                            <span class="input-group-text bg-light border-0"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control bg-light border-0" placeholder="Search or type"
+                                id="searchInput">
+                                <button class="btn btn-info" onclick="searchAssets()">Search</button>
+                                <button class="btn btn-success" onclick="addAsset()">Add</button>
+                        </div>
+
+                    </div>
 
                 </div>
+           
+
+
+
+
+                <div class="text-primary p-3"><h1>Add Edit Delete</h1></div>
+               
+               
+                
+                
+                
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Image</th>
+                            <th>NameAsset</th>
+                            <th>StaffID</th>
+                            <th>Status</th>
+                            <th></th>
+                            <th>Action</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblAsset">
+                    </tbody>
+                </table>
+            
+                <!-- Add/Edit Modal -->
+                <div class="modal" id="assetModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Add/Edit product</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <!-- Inside the form in the modal-body -->
+                                <form id="formAsset">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" name="Assetname" class="form-control mb-2" placeholder="Asset Name">
+                                    <select name="img" id="">
+                                        <option value="hat">hat</option>
+                                        <option value="jeans">jeans</option>
+                                        <option value="shirt">shirt</option>
+                                        <option value="shoe">shoe</option>
+                                        <option value="cat">cat</option>
+                                        <option value="catt">catt</option>
+                                        <option value="dog">dog</option>
+                                        <option value="dog2">dogg</option>
+                                    </select>
+                                    
+                                    <!-- Assuming Staffaddid is managed here -->
+                                    <p><h3><span class="d-none d-sm-inline mx-1" id="displayUsername" style="color:#5F6165;">StaffName</span>
+                                    </p><h3>
+                                        <p><h3><span class="d-none d-sm-inline mx-1" id="displayUserid" style="color:#5F6165;">StaffName</span>
+                                        </p><h3>
+                                    <!-- ... Other form elements remain unchanged ... -->
+                                    <button type="submit" class="btn btn-primary">OK</button>
+                                </form>
+            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+
+
+      
+
+
             </div>
         </div>
     </div>
 
+
+
+
+
+
+
+ 
     <!-- JavaScript -->
     <script>
         // add or edit methods
@@ -112,8 +211,31 @@
         rows += `<td>${asset.Assetstatus}</td>`;
         rows += `<td><button class="btn btn-warning" onclick=editAsset(${JSON.stringify(asset)})>Edit</button></td>`;
         rows += `<td><button class="btn btn-danger" onclick=deleteAsset(${asset.Assetid})>Delete</button></td>`;
+        if (asset.Assetstatus === 'Available') {
+            rows += `<td><button class="btn btn-outline-danger" onclick="toggleAssetStatus(${asset.Assetid}, 'Disabled')">Disable</button></td>`;
+        } else if (asset.Assetstatus === 'Disabled') {
+            rows += `<td><button class="btn btn-outline-info" onclick="toggleAssetStatus(${asset.Assetid}, 'Available')">Enable</button></td>`;
+        }
+
+        rows += `</tr>`;
     });
     document.querySelector("#tblAsset").innerHTML = rows;
+}
+function toggleAssetStatus(assetId, newStatus) {
+    fetch(`/assets/toggle-status/${assetId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newStatus: newStatus })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+        getAssets(); // Refresh the asset list
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 function getAssets() {

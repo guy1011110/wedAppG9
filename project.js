@@ -8,6 +8,8 @@ const { log } = require("console");
 const cors = require('cors');
 const app = express();
 
+
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/public", express.static('/Users/phakornc/Desktop/web appppp/public'));
@@ -28,6 +30,7 @@ app.use(session({
 }));
 
 
+
 //-----database-----//
 const con = mysql.createConnection({
     host: 'localhost',
@@ -35,6 +38,9 @@ const con = mysql.createConnection({
     password: '',
     database: 'Pro'
 });
+
+
+
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
@@ -44,6 +50,9 @@ const pool = mysql.createPool({
     connectionLimit: 10,
     queueLimit: 0
 });
+
+
+
 con.connect((err) => {
     if (err) {
         console.error("Error connecting to MySQL: " + err.stack);
@@ -51,6 +60,10 @@ con.connect((err) => {
     }
     console.log("Connected to MySQL as id " + con.threadId);
 });
+
+
+
+
 
 //---POST---//
 //-----Register-----//
@@ -83,6 +96,10 @@ app.post("/register", function (req, res) {
     });
 });
 
+
+
+
+
 //-----Login-----//
 app.post("/login", function (req, res) {
     const username = req.body.username;
@@ -104,6 +121,11 @@ app.post("/login", function (req, res) {
         }
     });
 });
+
+
+
+
+
 
 //-----Role-----//
 app.post("/userRole", function (req, res) {
@@ -134,6 +156,7 @@ app.post("/userRole", function (req, res) {
         }
     });
 });
+
 
 
 
@@ -236,6 +259,8 @@ app.get("/register", function (_req, res) {
 
 
 
+
+
 // ------ Logout -------//
 app.get("/logout", function (req, res) {
     // Clear session variables
@@ -256,113 +281,76 @@ app.get("/logout", function (req, res) {
 });
 
 
-// ------------- Get username --------------
-app.get("/user", function (req, res) {
-    if (req.session.fullname) {
-        res.json({ fullname: req.session.fullname });
-    } else {
-        res.status(401).json({ error: "No user info" });
-    }
-});
 
 
-//-----Change fullname-----//
-app.post("/updateName", async function (req, res) {
-    const username = req.session.username;
-    const currentPassword = req.body.currentPassword;
-    const newFullname = req.body.newFullname;
-
-    // Validate inputs
-    if (!username || !currentPassword || !newFullname) {
-        return res.status(400).json({ success: false, error: "Invalid input data" });
-    }
-
-    try {
-        // Fetch the user's data from the database
-        const sql = "SELECT password FROM user WHERE username = ?";
-        con.query(sql, [username], async function (err, results) {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ success: false, error: "Database error" });
-            } else if (results.length !== 1) {
-                return res.status(401).json({ success: false, error: "User not found" });
-            } else {
-                const hashedPassword = results[0].password;
-
-                // Compare the entered current password with the stored hash
-                const match = await bcrypt.compare(currentPassword, hashedPassword);
-
-                if (match) {
-                    // Current password is correct, update the name in the database
-                    const updateSql = "UPDATE user SET fullname = ? WHERE username = ?";
-                    con.query(updateSql, [newFullname, username], function (err) {
-                        if (err) {
-                            console.error(err);
-                            return res.status(500).json({ success: false, error: "Database error during name update" });
-                        } else {
-                            // Update the session with the new fullname
-                            req.session.fullname = newFullname;
-                            return res.status(200).json({ success: true });
-                        }
-                    });
-                } else {
-                    // Current password is incorrect
-                    return res.status(401).json({ success: false, error: "Current password is incorrect" });
-                }
-            }
-        });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ success: false, error: "Error during name update" });
-    }
-});
-
-//-----Change password-----//
-app.post('/changePassword', function (req, res) {
-    const username = req.session.username;
-    const oldPassword = req.body.oldPassword;
-    const newPassword = req.body.newPassword;
-
-    // Check if the user is authenticated
-    if (!username) {
-        return res.status(401).json({ success: false, error: "User not authenticated" });
-    }
-
-    // Query the database to get the hashed password for the user
-    const sqlCheckPassword = "SELECT password FROM user WHERE username = ?";
-    con.query(sqlCheckPassword, [username], async function (err, results) {
+// Endpoint to update username
+app.post("/updateUsername", async (req, res) => {
+    const { userID, newUsername } = req.body;
+console.log(userID)
+    // Check if new username already exists
+    const sqlCheck = "SELECT userid FROM user WHERE username = ?";
+    con.query(sqlCheck, [newUsername], function (err, results) {
         if (err) {
-            return res.status(500).json({ success: false, error: "Database error" });
-        } else if (results.length !== 1) {
-            return res.status(401).json({ success: false, error: "User not found" });
-        } else {
-            const hashedPassword = results[0].password;
-
-            // Compare the old password with the stored hash
-            const match = await bcrypt.compare(oldPassword, hashedPassword);
-
-            if (match) {
-                // Old password is correct, update the password in the database
-                const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-                const sqlUpdatePassword = "UPDATE user SET password = ? WHERE username = ?";
-                con.query(sqlUpdatePassword, [hashedNewPassword, username], function (err) {
-                    if (err) {
-                        return res.status(500).json({ success: false, error: "Database error during password update" });
-                    } else {
-                        return res.json({ success: true });
-                    }
-                });
-            } else {
-                // Old password is incorrect
-                return res.status(401).json({ success: false, error: "Old password is incorrect" });
-            }
+            return res.status(500).send("Database error!!");
+        } 
+        if (results.length > 0) {
+            return res.status(400).send("Username already taken!!");
         }
+
+        // Update username
+        const sqlUpdate = "UPDATE user SET username = ? WHERE userid = ?";
+        con.query(sqlUpdate, [newUsername, userID], function (err) {
+            if (err) {
+                return res.status(500).send("Database error during username update!!");
+            }
+            res.status(200).send("Username successfully updated!");
+        });
     });
 });
 
+// Endpoint to update password
+app.post("/updatePassword", async (req, res) => {
+    const { userID, oldPassword, newPassword } = req.body;
+
+    // Fetch the current password for the user
+    const sqlGetCurrentPassword = "SELECT password FROM user WHERE userid = ?";
+    con.query(sqlGetCurrentPassword, [userID], async function (err, results) {
+        if (err) {
+            return res.status(500).send("Database error!!");
+        }
+
+        // Check if the old password matches
+        const match = await bcrypt.compare(oldPassword, results[0].password);
+        if (!match) {
+            return res.status(401).send("Incorrect current password!");
+        }
+
+        // Hash the new password
+        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+        // Update password
+        const sqlUpdatePassword = "UPDATE user SET password = ? WHERE userid = ?";
+        con.query(sqlUpdatePassword, [hashedNewPassword, userID], function (err) {
+            if (err) {
+                return res.status(500).send("Database error during password update!!");
+            }
+            res.status(200).send("Password successfully updated!");
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
 // Get all assets
 app.get("/assets", function (req, res) {
-    const sql = "SELECT * FROM Asset"; // Assuming your table name is Asset
+    const sql = "SELECT * FROM Asset WHERE Assetstatus IN ('Disabled', 'Available')";
     con.query(sql, function (err, results) {
         if (err) {
             res.status(500).send("Database error!!");
@@ -371,6 +359,8 @@ app.get("/assets", function (req, res) {
         }
     });
 });
+
+
 
 
 
@@ -393,6 +383,11 @@ app.post("/assets", function (req, res) {
     });
 });
 
+
+
+
+
+
 // Edit an existing asset
 app.put("/assets/:id", function (req, res) {
     const { Assetname, Assetimg, Assetstatus, Staffaddid } = req.body;
@@ -412,6 +407,11 @@ app.put("/assets/:id", function (req, res) {
     });
 });
 
+
+
+
+
+
 // Delete an asset
 app.delete("/assets/:id", function (req, res) {
     const id = req.params.id;
@@ -429,6 +429,24 @@ app.delete("/assets/:id", function (req, res) {
         }
     });
 });
+
+
+app.put("/assets/toggle-status/:id", function (req, res) {
+    const id = req.params.id;
+    const newStatus = req.body.newStatus;
+
+    const sqlUpdate = "UPDATE Asset SET Assetstatus = ? WHERE Assetid = ?";
+    con.query(sqlUpdate, [newStatus, id], function (err, result) {
+        if (err) {
+            res.status(500).send("Database error during the update!!");
+        } else {
+            res.status(200).json({ success: true, message: 'Asset status updated successfully' });
+        }
+    });
+});
+
+
+
 app.get("/test", function (_req, res) {
     res.sendFile(path.join(__dirname, "/public/web_pro/student/test.html"));
 });
@@ -438,6 +456,10 @@ app.get("/student/asset-accept", function (_req, res) {
 app.get("/lect/getreturn", function (_req, res) {
     res.sendFile(path.join(__dirname, "/public/web_pro/lect/lect-return.html"));
 });
+
+
+
+
 
 
 // This is just a sample code, you will need to adapt it to your actual backend setup.
@@ -465,6 +487,7 @@ app.post('/borrow-asset', (req, res) => {
 
 
 
+
 app.put('/update-asset-status/:assetId', (req, res) => {
     const assetId = req.params.assetId;
     const { status } = req.body;
@@ -480,6 +503,10 @@ app.put('/update-asset-status/:assetId', (req, res) => {
         }
     });
 });
+
+
+
+
 
 app.put('/update-asset-status/:assetId', (req, res) => {
     const assetId = req.params.assetId;
@@ -498,6 +525,9 @@ app.put('/update-asset-status/:assetId', (req, res) => {
         }
     });
 });
+
+
+
 
 
 
@@ -522,6 +552,9 @@ app.get("/borrow-assett", function (req, res) {
     });
 
 });
+
+
+
 
 
 
@@ -557,10 +590,15 @@ app.post('/approve-request', (req, res) => {
     });
 });
 
+
+
+
+
+
 app.post('/disapprove-request', (req, res) => {
     const { requestId, username, reason } = req.body;
 
-    const sqlDisapprove = 'UPDATE BorrowReq SET lectname = ?, Comment = ?, Status = "Disapproved" WHERE Reqid = ?';
+    const sqlDisapprove = 'UPDATE BorrowReq SET lectname = ?, Comment = ?, Status = "Reject" WHERE Reqid = ?';
 
     pool.query(sqlDisapprove, [username, reason, requestId], (error, disapproveResult) => {
         if (error) {
@@ -568,7 +606,7 @@ app.post('/disapprove-request', (req, res) => {
         }
 
         if (disapproveResult.affectedRows) {
-            const sqlUpdateAsset = 'UPDATE Asset JOIN BorrowReq ON Asset.Assetid = BorrowReq.Assetid SET Asset.Assetstatus = "Disabled" WHERE BorrowReq.Reqid = ?';
+            const sqlUpdateAsset = 'UPDATE Asset JOIN BorrowReq ON Asset.Assetid = BorrowReq.Assetid SET Asset.Assetstatus = "Available" WHERE BorrowReq.Reqid = ?';
 
             pool.query(sqlUpdateAsset, [requestId], (error, updateAssetResult) => {
                 if (error) {
@@ -587,23 +625,36 @@ app.post('/disapprove-request', (req, res) => {
     });
 });
 
+
+
+
+
+
 app.get('/asset-borrow-requests', async (req, res) => {
+    const username = req.query.username; // Get the username from the query parameter
+
     const sql = `
-      SELECT 
-        Asset.Assetid, Asset.Assetimg, Asset.Assetname, Asset.Assetstatus, Asset.Staffaddid,
-        BorrowReq.Borrowdate, BorrowReq.ReturnDate, BorrowReq.lectname
-      FROM Asset
-      LEFT JOIN BorrowReq ON Asset.Assetid = BorrowReq.Assetid
+        SELECT 
+            Asset.Assetid, Asset.Assetimg, Asset.Assetname, Asset.Assetstatus, Asset.Staffaddid,
+            BorrowReq.Borrowdate, BorrowReq.ReturnDate, BorrowReq.lectname
+        FROM Asset
+        LEFT JOIN BorrowReq ON Asset.Assetid = BorrowReq.Assetid
+        WHERE BorrowReq.Borrowname = ?
     `;
 
     try {
-        const [results] = await con.promise().query(sql);
+        const [results] = await con.promise().query(sql, [username]);
         res.json(results);
     } catch (error) {
         console.error(error);
         res.status(500).send("Database error.");
     }
 });
+
+
+
+
+
 
 
 app.put('/return-asset/:assetId', async (req, res) => {
@@ -639,6 +690,11 @@ app.put('/return-asset/:assetId', async (req, res) => {
     }
 });
 
+
+
+
+
+
 //   app.get('/search-assets', async (req, res) => {
 //     const { name } = req.query;
 //     try {
@@ -649,40 +705,56 @@ app.put('/return-asset/:assetId', async (req, res) => {
 //       res.status(500).send("Database error.");
 //     }
 //   });
-app.get('/disabled-assets-requests', (req, res) => {
+
+
+
+
+
+app.get('/disabled-assets-requests', async (req, res) => {
+    const username = req.query.username; // Get the username from the query parameter
+
     const sql = `
-        SELECT a.*, br.comment
+        SELECT a.Assetid,a.Assetimg,a.Assetname,br.Status, br.comment
         FROM Asset a
         LEFT JOIN BorrowReq br ON a.Assetid = br.Assetid
-        WHERE a.Assetstatus = 'Disabled'
+        WHERE br.Status = 'Reject' AND br.Borrowname = ?
     `;
 
-    con.query(sql, (err, results) => {
-        if (err) {
-            console.error(err);
-            res.status(500).send('Server error');
-        } else {
-            res.json(results);
-        }
-    });
+    try {
+        const [results] = await con.promise().query(sql, [username]);
+        res.json(results);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server error');
+    }
 });
+
+
+
 
 
 
 app.get('/pending-assets-requests', async (req, res) => {
+    const username = req.query.username;
     const sql = `
-      SELECT *
-      FROM Asset
-      WHERE Assetstatus = 'Pending'
+    SELECT a.*
+    FROM Asset a
+    LEFT JOIN BorrowReq br ON a.Assetid = br.Assetid
+    WHERE a.Assetstatus = 'Pending' AND br.Borrowname = ?
     `;
 
     try {
-        const [results] = await con.promise().query(sql);
-        res.json(results);
+        const [results] = await con.promise().query(sql, [username]);
+        res.json(results);  
     } catch (error) {
-        res.status(500).send("Database error.");
+        console.error(error);
+        res.status(500).send('Server error');
     }
 });
+
+
+
+
 
 
 
@@ -703,7 +775,12 @@ app.get('/asset-borrow-return', async (req, res) => {
         res.status(500).send("Database error.");
     }
 });
-app.delete('/getreturn-asset/:assetId', async (req, res) => {
+
+
+
+
+
+app.delete('/cancel-asset-request/:assetId', async (req, res) => {
     const assetId = req.params.assetId;
 
     try {
@@ -723,7 +800,7 @@ app.delete('/getreturn-asset/:assetId', async (req, res) => {
 
         // Check if the delete operation was successful
         if (borrowReqDeleteResult.affectedRows === 0) {
-            throw new Error('Borrow request not found or already handled');
+            throw new Error('Borrow request not found');
         }
 
         await con.promise().commit();
@@ -733,6 +810,40 @@ app.delete('/getreturn-asset/:assetId', async (req, res) => {
         res.status(500).json({ success: false, message: 'Transaction failed: ' + error.message });
     }
 });
+
+app.delete('/getreturn-asset/:assetId', async (req, res) => {
+    const assetId = req.params.assetId;
+
+    try {
+        await con.promise().beginTransaction();
+
+        // Update Asset table to set Assetstatus to 'Available'
+        const updateAssetStatusQuery = 'UPDATE Asset SET Assetstatus = "Available" WHERE Assetid = ?';
+        const [assetUpdateResult] = await con.promise().query(updateAssetStatusQuery, [assetId]);
+
+        if (assetUpdateResult.affectedRows === 0) {
+            throw new Error('Asset not found');
+        }
+
+        // Update the row in BorrowReq table to set Status to 'Returned'
+        const updateBorrowReqStatusQuery = 'UPDATE BorrowReq SET Status = "Returned" WHERE Assetid = ?';
+        const [borrowReqUpdateResult] = await con.promise().query(updateBorrowReqStatusQuery, [assetId]);
+
+        // Check if the update operation was successful
+        if (borrowReqUpdateResult.affectedRows === 0) {
+            throw new Error('Borrow request not found or already returned');
+        }
+
+        await con.promise().commit();
+        res.json({ success: true, message: 'Asset returned and borrow request status updated' });
+    } catch (error) {
+        await con.promise().rollback();
+        res.status(500).json({ success: false, message: 'Transaction failed: ' + error.message });
+    }
+});
+
+
+
 
 app.get('/history', async (req, res) => {
     const sql = `
@@ -752,6 +863,11 @@ app.get('/history', async (req, res) => {
     }
 });
 
+
+
+
+
+
 app.get('/Assetlist', async (req, res) => {
     const sql = `
     SELECT * FROM Asset
@@ -765,6 +881,75 @@ app.get('/Assetlist', async (req, res) => {
         res.status(500).send("Database error.");
     }
 });
+
+
+
+
+app.get("/assets/count", async (req, res) => {
+    try {
+        const [available] = await con.promise().query("SELECT COUNT(*) AS count FROM Asset WHERE Assetstatus = 'Available'");
+        const [borrowing] = await con.promise().query("SELECT COUNT(*) AS count FROM Asset WHERE Assetstatus = 'Borrowing'");
+        const [disabled] = await con.promise().query("SELECT COUNT(*) AS count FROM Asset WHERE Assetstatus = 'Disabled'");
+        const [pending] = await con.promise().query("SELECT COUNT(*) AS count FROM Asset WHERE Assetstatus = 'Pending'");
+
+        res.json({
+            available: available[0].count,
+            borrowing: borrowing[0].count,
+            disabled: disabled[0].count,
+            pending: pending[0].count
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Database error.");
+    }
+});
+
+
+app.get("/borrow-requests-summary", async (req, res) => {
+    // SQL query to count the number of borrow requests in each status
+    const sql = `
+        SELECT Status, COUNT(*) as count
+        FROM BorrowReq
+        GROUP BY Status
+    `;
+
+    try {
+        const [results] = await con.promise().query(sql);
+        // Transform results into a format suitable for the chart
+        const chartData = {
+            pending: 0,
+            repending: 0,
+            approve: 0,
+            disapprove: 0,
+            reject: 0,
+            return: 0
+        };
+
+        results.forEach(row => {
+            if (row.Status === 'Pending') {
+                chartData.pending = row.count;
+            } else if (row.Status === 'RePending') {
+                chartData.repending = row.count;
+            } else if (row.Status === 'Approved') {
+                chartData.approve = row.count;
+            } else if (row.Status === 'Disapproved') {
+                chartData.disapprove = row.count;
+            } else if (row.Status === 'Reject') {
+                chartData.reject = row.count;
+            } else if (row.Status === 'Returned') {
+                chartData.return = row.count;
+            }
+        });
+
+        res.json(chartData);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Database error.");
+    }
+});
+
+
+
 //-----PORT-----//
 const port = 3000;
 app.listen(port, function () {
